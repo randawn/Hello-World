@@ -1,0 +1,37 @@
+(define presice 0.0001)
+
+(define (aver x y)
+  (/ (+ x y) 2))
+
+(define (quot x y)
+  (/ x y))
+
+(define (abs x)
+  (if (> x 0)
+      x
+      (- 0 x)))
+
+(define (sqrt x)
+  (* x x))
+
+(define (distant x y)
+  (abs (- x y)))
+
+(define (bingo x y)
+  (if (< (distant x (sqrt y)) presice)
+      true
+      false))
+
+(define (sqrtr-iter x guess)
+  (if (bingo x guess)
+      (guess)
+      (sqrt-iter x (aver guess (quot x guess)))))
+
+(define (sqrtr x)
+  (sqrt-iter x 1.0))
+
+(sqrtr 2)
+
+(sqrt (sqrtr 2))
+
+(square (sqrtr 2))

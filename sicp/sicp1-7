@@ -1,0 +1,22 @@
+(load "sicp1.1.7")
+
+;(define (bingo x y)
+;  (if (< (quot (abs (- x y))
+;		    y)
+;	       presice)
+;      true
+;      false))
+
+(define (sqrtr-iter x guess)
+  (if (bingo guess (refine x guess))
+    (refine x guess)
+    (sqrtr-iter x (refine x guess))))
+
+(sqrtr 4)
+;(define (sqrtr-iter x guess)
+;  (let ((nguess (refine x guess)))
+;    ((if (bingo guess nguess)
+;       nguess
+;       (sqrtr-iter x nguess)))))
+
+

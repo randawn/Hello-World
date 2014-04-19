@@ -1,0 +1,11 @@
+
+(define (square x)
+  (* x x))
+(define (min x y z)
+  (cond ((and (< x y) (< x z)) x)
+        ((and (< y x) (< y z)) y)
+        (else z)))
+(define (e1-3 x y z)
+  (cond ((= x (min x y z)) (+ (square y) (square z)))
+        ((= y (min x y z)) (+ (square x) (square z)))
+        (else (+ (square x) (square y)))))
