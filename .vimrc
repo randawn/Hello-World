@@ -1,5 +1,11 @@
 
 set nocompatible
+filetype off
+
+set rtp+=~/.vim/bundle/vundle/
+call vundle#rc()
+Bundle 'gmarik/vundle'
+Bundle 'vim-flake8'
 
 filetype plugin indent on
 syntax on
@@ -15,6 +21,7 @@ set hidden         " Hide buffers when they are abandoned
 "set mouse=a       " Enable mouse usage (all modes)
 set expandtab
 set shiftwidth=4
+   
 set tabstop=4
 set nobackup
 set nu
@@ -27,4 +34,6 @@ set background=dark
 if has("autocmd")
   au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 endif
+
+nmap <F5> :w:!./%&
 
