@@ -9,4 +9,4 @@ setenv CLICOLOR yes
 set autoexpand
 set autolist
 
-set prompt = "%U%n%u:%B%~%b%# "
+set prompt = "%U%n%u:%B%c%b%#"
