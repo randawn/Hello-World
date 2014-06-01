@@ -2,7 +2,7 @@
 
 #define NUL '\0'
 #define MAXCHAR 100
-#define MAXLINE 10
+#define MAXLINE 4
 #define TABSTOP 4
 #define IN 1
 #define OUT 0
