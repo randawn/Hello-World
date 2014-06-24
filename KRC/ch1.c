@@ -13,10 +13,13 @@ void dup_blank_rm();                // ex 1-9
 void disp_invisible_char();         // ex 1-10
 void word_cnt();                    // ex 1-11
 void word_put();                    // ex 1-12
+void word_len_hist();               // ex 1-13
+void char_freq_hist();              // ex 1-14
+float fahr2celsius(int fahr);       // ex 1-15
 
 int main()
 {
-    word_put();
+    char_freq_hist();
     return 0;
 }
 
@@ -24,10 +27,12 @@ void print_hello ()
 {
     printf("hello, world\n");
 }
+
 void print_head()
 {
     printf("%10s\t%10s\n", "fahr", "celsius");
 }
+
 void print_table()
 {
 #define LOWER   (0)
@@ -39,6 +44,7 @@ void print_table()
         printf("%10d\t%10.1f\n", celsius, celsius2fahr(celsius));
     }
 }
+
 void print_table_r()
 {
 #define LOWER   (0)
@@ -56,6 +62,7 @@ float celsius2fahr(int celsius)
     fahr = celsius * 9 / 5.0 + 32;
     return fahr;
 }
+
 void verify_EOF()
 {
     printf("(getchar() != EOF) = %d\n", (getchar() != EOF));
@@ -64,6 +71,7 @@ void print_EOF()
 {
     printf("EOF =  %x\n", EOF);
 }
+
 void cnt_b_t_n()
 {
     char c;
@@ -161,3 +169,109 @@ void word_put()
         putchar(c);
     }
 }
+
+void word_len_hist()
+{
+    char c;
+    enum {IN, OUT} flag;
+    flag = OUT;
+    int word_len[10] = {0};
+    int len_cnt = 0;
+    int i;
+    while ((c = getchar()) != EOF)
+    {
+        if(c == ' '||c == '\t'||c == '\n') {
+            if(flag == IN) {
+                if(len_cnt>=10)
+                    word_len[0] += 1;
+                else
+                    word_len[len_cnt] += 1;
+                flag = OUT;
+            }
+        } else if (flag == OUT) {
+                len_cnt = 1;
+                flag = IN;
+        } else {
+                len_cnt++;
+        } 
+    }
+    // print header
+    for (i = 0; i < 10; i++) {
+        printf(" [%d] ", i);
+    }
+    printf("\n");
+    // if we need print any more
+    int sum = 0;
+    for (i = 0; i < 10; i++) {
+        sum += word_len[i];
+    }
+    while(sum > 0) {
+        for (i = 0; i < 10; i++) {
+            if (word_len[i] ==0) {
+                printf("     ");
+            }
+            else if (word_len[i]-- > 0) {
+                printf("  *  ");
+            } else {
+                printf("ERROR\n");
+            }
+        }
+        printf("\n");
+        sum = 0;
+        for (i = 0; i < 10; i++) {
+            sum += word_len[i];
+        }
+    }
+    printf("\n");
+}
+
+void char_freq_hist()
+{
+    char c;
+    int char_cnt[128] = {0};
+    int i;
+    while ((c = getchar()) != EOF)
+    {
+        if(32 <= c && c <= 125) {
+            char_cnt[c-31] += 1;
+        } else {
+            char_cnt[0] += 1;
+        }
+    }
+    // print header
+    printf("%d", 0);
+    for (i = 32; i <= 125; i++) {
+        printf("%c", i);
+    }
+    printf("\n");
+    // if we need print any more
+    int sum = 0;
+    for (i = 0; i < 128; i++) {
+        sum += char_cnt[i];
+    }
+    while(sum > 0) {
+        for (i = 0; i < 125-32+1+1; i++) {
+            if (char_cnt[i] ==0) {
+                printf(" ");
+            }
+            else if (char_cnt[i]-- > 0) {
+                printf("*");
+            } else {
+                printf("ERROR\n");
+            }
+        }
+        printf("\n");
+        sum = 0;
+        for (i = 0; i < 10; i++) {
+            sum += char_cnt[i];
+        }
+    }
+}
+
+float fahr2celsius(int fahr)
+{
+    float celsius;
+    celsius = (fahr - 32) / 9 * 5.0;
+    return celsius;
+}
+
