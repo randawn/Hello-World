@@ -3,7 +3,7 @@ filetype off
 
 set rtp+=~/.vim/bundle/Vundle.vim
 
-call vundle#begin()
+"call vundle#begin()
 "Plugin 'gmarik/Vundle'
 "Plugin 'scrooloose/syntastic'
 "Plugin 'nvie/vim-flake8'
@@ -11,7 +11,7 @@ call vundle#begin()
 "Plugin 'honza/vim-snippets'
 "Plugin 'Valloric/YouCompleteMe'
 "Plugin 'majutsushi/tagbar'
-call vundle#end()
+"call vundle#end()
 
 filetype on
 filetype plugin indent on
@@ -34,7 +34,7 @@ set nobackup
 set nu
 set ruler
 
-colorscheme slate
+"colorscheme slate
 set background=dark
 
 "jump to the last position when reopening a file
