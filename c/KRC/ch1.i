@@ -1,4 +1,4 @@
-%module ch1
+%module ch1_wrap
 
 %{
 #define SWIG_FILE_WITH_INIT
@@ -6,4 +6,4 @@
 %}
 //#include "ch1.h"
 
-void char_freq_hist(void);                 // ex 1-4
+void reverseLineWrap(void);
