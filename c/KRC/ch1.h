@@ -15,4 +15,12 @@ void word_put(void);                    // ex 1-12
 void word_len_hist(void);               // ex 1-13
 void char_freq_hist(void);              // ex 1-14
 float fahr2celsius(int fahr);           // ex 1-15
-
+void print_longest_line(void);          // ex 1-16
+char * getLine(char line[], int lim);
+int lineCnt(char line[]);
+void copyLine(char from[], char to[]);
+void print_line80pchar(void);           // ex 1-17
+void trailRemoveWrap(void);             // ex 1-18
+void trailRemove(char line[]);
+void reverseLineWrap(void);             // ex 1-19
+void reverseLine(char line[]);
