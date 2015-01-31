@@ -3,7 +3,6 @@
 
 int main(void)
 {
-    word_cnt();
     return 0;
 }
 
