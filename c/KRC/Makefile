@@ -2,19 +2,23 @@
 CH = ch1
 WARN = -Wall
 
-# ch1_wrap.c ch1_wrap.py 
-# ch1_wrap.c ch1_wrap.py ch1.o 
-# ch1_wrap.c ch1_wrap.py ch1.o ch1_wrap.o 
-# ch1_wrap.c ch1_wrap.py ch1.o ch1_wrap.o _ch1.so 
+.PHONY: $(CH)
+$(CH): _$(CH).so
 
-$(CH):
-	swig $(WARN) -python $(CH).i
-	gcc  $(WARN) -fPIC -c $(CH).c
-	gcc  $(WARN) -fPIC -c $(CH)_wrap.c -I /usr/include/python2.7/
+_$(CH).so: $(CH).o $(CH)_wrap.o
 	gcc  $(WARN) -shared $(CH).o $(CH)_wrap.o -o _$(CH).so
+
+$(CH).o: $(CH).c
+	gcc  $(WARN) -fPIC -c $(CH).c
+
+$(CH)_wrap.o: $(CH)_wrap.c
+	gcc  $(WARN) -fPIC -c $(CH)_wrap.c -I /usr/include/python2.7/
+
+$(CH)_wrap.c $(CH)_wrap.py: $(CH).i
+	swig $(WARN) -python $(CH).i
 
 .PHONY: clean
 clean:
-	rm *.o *.so *.pyc  *_wrap.* a.out -f
+	-rm *.o *.so *.pyc  *_wrap.* a.out -f
 
 
