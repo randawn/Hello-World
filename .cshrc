@@ -10,3 +10,4 @@ set autoexpand
 set autolist
 
 set prompt = "%U%n%u:%B%c%b%#"
+

@@ -2,6 +2,7 @@
 alias a alias
 a v vi
 
+a sl ls
 a ls ls --color
 a la ls -a
 a ll ls -l
