@@ -1,4 +1,4 @@
-%module ch1_wrap
+%module ch1
 
 %{
 #define SWIG_FILE_WITH_INIT

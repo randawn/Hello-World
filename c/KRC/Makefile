@@ -1,5 +1,5 @@
 
-CH = ch1
+CH = ch2
 WARN = -Wall
 
 .PHONY: $(CH)
@@ -19,6 +19,6 @@ $(CH)_wrap.c $(CH)_wrap.py: $(CH).i
 
 .PHONY: clean
 clean:
-	-rm *.o *.so *.pyc  *_wrap.* a.out -f
+	-rm *.o *.so *.pyc  *_wrap.* a.out ch*.py -f
 
 
