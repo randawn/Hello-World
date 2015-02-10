@@ -48,3 +48,44 @@ void print_range()
     printf("hello world\n");
 }
 
+/* Exercise 2-2
+  for(i=0; i<lim-1 && (c=getchar()) != '\n' && c != EOF; ++i)
+    s[i] = c;
+ * Write a loop equivalent to the for loop above without using && or ||. 
+ */
+
+void for_loop()
+{
+    int lim = 1024;
+    int c, i;
+    char s[lim];
+    //for(i=0; i<lim-1 && (c=getchar()) != '\n' && c != EOF; ++i)
+    //    s[i] = c;
+    for(i=0; i<lim-1; ++i) {
+        c=getchar();
+        if(c=='\n' || c==EOF)
+            break;
+        s[i] = c;
+    }
+    if(c=='\n') {
+        s[i]='\0';
+        i++;
+    }
+    s[i]='\0';
+    printf("for loop get : %s\n", s);
+}
+
+
+/* Exercise 2-3
+ * Write the function htoi(s),
+ * which converts a string of hexadecimal digits
+ * (including an optional 0x or 0X) into its equivalent integer value.
+ * The allowable digits are 0 through 9, a through f, and A through F. 
+ */
+
+int htoi(char s[])
+{
+    printf("h to i: %s\n", s);
+    return 0;
+}
+
