@@ -82,10 +82,76 @@ void for_loop()
  * (including an optional 0x or 0X) into its equivalent integer value.
  * The allowable digits are 0 through 9, a through f, and A through F. 
  */
-
 int htoi(char s[])
 {
     printf("h to i: %s\n", s);
-    return 0;
+    if(*s=='0' && (*(s+1)=='x' || *(s+1)=='X')) {
+        s = s+2;
+    }
+    int len;
+    len = lenLine(s);
+    if (len==0)
+        return 0;
+    int sum = 0;
+    int i;
+    for(i=len; i>0; i--) {
+        sum = sum*16 + htoichar(s[len-i]);
+    }
+    return sum;
+}
+int lenLine(char line[])
+{
+    int i = 0;
+    while(line[i]!= '\0'){
+        i++;
+    }
+    return i;
+}
+int htoichar(char h) {
+    int head = '\0';
+    if(h>='0' && h<='9') {
+        head = '0';
+    } else if (h>='a' && h<='z') {
+        head = 'a'-10;
+    } else if (h>='A' && h<='Z') {
+        head = 'A'-10;
+    } else {
+        printf("ERROR code %c\n", h);
+    }
+    return h - head;
 }
 
+/* Exercise 2-4
+ * Write an alternate version of squeeze(s1,s2) that deletes each
+ * character in s1 that matches any character in the string s2.
+ * squeeze: delete all c from s
+ * void squeeze(char s[], int c)
+ * {
+ *     int i, j;
+ *     for (i=j=0; s[i]!='\0'; i++) {
+ *         if (s[i] != c)
+ *             s[j++] = s[i];
+ *     s[j] = '\0';
+ *     }
+ * }
+ */
+void squeeze(char* s1, char* s2)
+{
+    int i, j, k;
+    int flag=0;
+    j = 0;
+    printf("in b c %s\n", s1);
+    for(i=0; s1[i]!='\0'; i++) {
+        for(k=0; s2[k]!='\0'; k++) {
+            if(s1[i]==s2[k]) {
+                flag=1;
+                break;
+            }
+        }
+        if(flag!=1)
+            s1[j++]=s1[i];
+        flag=0;
+    }
+    s1[j]='\0';
+    printf("in c %s\n", s1);
+}
