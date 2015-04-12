@@ -140,7 +140,6 @@ void squeeze(char* s1, char* s2)
     int i, j, k;
     int flag=0;
     j = 0;
-    printf("in b c %s\n", s1);
     for(i=0; s1[i]!='\0'; i++) {
         for(k=0; s2[k]!='\0'; k++) {
             if(s1[i]==s2[k]) {
@@ -153,5 +152,93 @@ void squeeze(char* s1, char* s2)
         flag=0;
     }
     s1[j]='\0';
-    printf("in c %s\n", s1);
 }
+
+/* Exercise 2-5
+ * Write the function any(s1,s2),
+ * which returns the first location in the string s1
+ * where any character from the string s2 occurs,
+ * or -1 if s1 contains no characters from s2.
+ * (The standard library function strpbrk #FIXME
+ * does the same job but returns a pointer to the location.) 
+ */
+int any(char * s1, char * s2)
+{
+    int i, j;
+    for(i=0; s1[i]!='\0'; i++) {
+        for(j=0; s2[j]!='\0'; j++) {
+            if(s1[i]==s2[j]) {
+                return i;
+            }
+        }
+    }
+    return -1;
+}
+
+/* Exercise 2-6
+ * Write a function setbits(x,p,n,y) that
+ * returns x with the n bits that
+ * begin at position p set to the rightmost n bits of y,
+ * leaving the other bits unchanged. 
+ */
+void hexPbin(unsigned x)
+{
+    if(x==0)
+        return;
+    hexPbin(x>>1);
+    printf("%d", x&0x1);
+}
+unsigned setbit(unsigned x, int p, int n, unsigned y)
+{
+    return (x & ((~0<<(p+1)) | ~(~0<<(p-n+1)))) |
+           ((y & ~(~0<<n)) << (p-n+1));
+}
+
+/* Exercise 2-7
+ * Write a function invert(x,p,n) that
+ * returns x with the n bits that begin at position p inverted
+ * (i.e., 1 changed into 0 and vice versa), leaving the others unchanged.
+ */
+unsigned invert(unsigned x, int p, int n)
+{
+    //return x ^ ((~(~0<<(p+1)) >> (p+1-n)) << (p+1-n));
+    //return x ^ (((~0u>>(32-(p+1))) >> (p+1-n)) << (p+1-n));
+    return x ^ (~(~0<<n) << (p+1-n));
+}
+
+/* Exercise 2-8
+ * Write a function rightrot(x,n) that
+ * returns the value of the integer x
+ * rotated to the right by n bit positions. 
+ */
+unsigned rightrot(unsigned x, int n)
+{
+    return (x >> n) | (x << (32-n));
+}
+
+/* Exercise 2-9
+ * In a two's complement number system,
+ * x &= (x-1) deletes the rightmost 1-bit in x.
+ * Explain why. Use this observation to write a faster version of bitcount . 
+ */
+int bitcount(unsigned x)
+{
+    int b=0;
+    while(x>0) {
+        b++;
+        x &= (x-1);
+    }
+    return b;
+}
+
+
+/* Exercise 2-10.
+ * Rewrite the function lower,
+ * which converts upper case letters to lower case,
+ * with a conditional expression instead of if-else.
+ */
+char lower(char c)
+{
+    return (c>='A' && c<='Z')? c+('a'-'A') : c;
+}
+
