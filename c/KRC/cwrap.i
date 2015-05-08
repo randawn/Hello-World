@@ -6,10 +6,13 @@
 #include "ch1.h"
 #include "ch2.h"
 #include "ch3.h"
+#include "ch4.h"
 %}
 
 %include "carrays.i"
 %array_class(int, intArray);
 
-void itoaw_wrap();
+int strrindex(char * s, char * t);
+double atofn(char * s);
+void calculator();
 
