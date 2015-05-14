@@ -325,5 +325,75 @@ void ungetch_(int c)
 // read an entire line, put in a char[].
 // getop use pointer to access. do not need getch and ungetch.
 
+/* Exercise 4-11
+ * Modify getop so that it doesn't need to use ungetch.
+ * Hint: use an internal static variable.
+ */
+//TODO
+//int getop(char s[])
+//{
+//    static int bufc = EOF;
+//    ...
+//    when unget, store c in bufc
+//    when getch, check bufc first
+//}
 
+
+/* Exercise 4-12
+ * Adapt the ideas of printd to write a recursive version of atoi;
+ * that is, convert an integer into a string by calling a recursive routine. 
+ */
+
+void itoa(int n, char s[], int idx)
+{
+    static int i=0;
+    if(n==0)
+        return;
+    itoa(n/idx, s, idx);
+    s[i++]=(char)((n%idx) + '0');
+}
+
+void itoa_wrap()
+{
+    char s[10];
+    int n = 9876;
+    itoa(n, s, 10);
+    printf("out : %d\t%s\n", n,s);
+    printf("s : %s\n", s);
+    reverse(s);
+    printf("s : %s\n", s);
+}
+
+/* Exercise 4-13
+ * Write a recurisve version of the function reverse(s),
+ * which reverses the string s in place.
+ */
+
+void reverse(char s[])
+{
+    int l = strlen(s);
+    if(l<=1)
+        return;
+    else {
+        char c;
+        c = s[l-1];
+        s[l-1] = '\0';
+        reverse(s+1);
+        s[l-1] = s[0];
+        s[0] = c;
+    }
+}
+
+
+/* Exercise 4-14
+ * Define a macro swap(t, x, y) that
+ * interchange two arguements of type t. (Block structure will help)
+ */
+
+#define swap(t, x, y) \
+    do {t tmp;\
+     tmp = x;\
+     x = y;\
+     y = tmp;\
+    } while(0);
 

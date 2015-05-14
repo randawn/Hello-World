@@ -24,5 +24,9 @@ int getch(void);
 void ungetch(int);
 void calhelp();
 void ungets(char * s);                  // ex 4-7
-int getch_(void);                         // ex 4-8
+int getch_(void);                       // ex 4-8
 void ungetch_(int);
+
+void itoa(int n, char s[], int idx);    // ex 4-12
+void reverse(char s[]);                 // ex 4-13
+
