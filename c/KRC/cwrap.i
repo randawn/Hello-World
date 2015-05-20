@@ -7,12 +7,20 @@
 #include "ch2.h"
 #include "ch3.h"
 #include "ch4.h"
+#include "ch5.h"
 %}
 
 %include "carrays.i"
 %array_class(int, intArray);
 
-int strrindex(char * s, char * t);
-double atofn(char * s);
-void calculator();
+
+%include "typemaps.i"
+
+//int getint(int *pn);
+int getint(int *INOUT);
+//int getfloat(float *pn);
+int getfloat(float *INOUT);
+
+void strcate(char *s, char *t);
+int strend(char *s, char *t);
 

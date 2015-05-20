@@ -296,7 +296,7 @@ int getch_(void)
 }
 void ungetch_(int c)
 {
-    if(bufc==EOF)
+    if(bufc!=EOF)
         printf("ERROR: ungetch: char occupyed\n");
     else {
         bufc = c;
