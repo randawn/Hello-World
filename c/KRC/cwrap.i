@@ -24,3 +24,11 @@ int getfloat(float *INOUT);
 void strcate(char *s, char *t);
 int strend(char *s, char *t);
 
+void str_wrap(void);
+
+int day_of_year(int year, int month, int day);
+//void month_day(int year, int yearday, int *pmonth, int *pday);
+void month_day(int year, int yearday, int *OUTPUT, int *OUTPUT);
+
+
+
