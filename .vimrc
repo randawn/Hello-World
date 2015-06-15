@@ -1,5 +1,5 @@
 set nocompatible
-filetype off
+"filetype off
 
 set rtp+=~/.vim/bundle/Vundle.vim
 "call vundle#begin()
@@ -12,9 +12,10 @@ set rtp+=~/.vim/bundle/Vundle.vim
 "Plugin 'majutsushi/tagbar'
 "call vundle#end()
 
-filetype on
-filetype plugin indent on
-syntax on
+"filetype on
+"filetype plugin indent on
+"syntax on
+
 " from vi to vim 
 set showcmd        " Show (partial) command in status line.
 set showmatch      " Show matching brackets.
@@ -24,7 +25,7 @@ set incsearch      " Incremental search
 set hlsearch
 set autowrite      " Automatically save before commands like :next and :make
 set hidden         " Hide buffers when they are abandoned
-set mouse=a       " Enable mouse usage (all modes)
+"set mouse=a       " Enable mouse usage (all modes)
 set expandtab
 set shiftwidth=4
    

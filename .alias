@@ -7,3 +7,5 @@ a ls ls --color
 a la ls -a
 a ll ls -l
 
+a j jobs
+
