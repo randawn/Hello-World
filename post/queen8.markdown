@@ -40,13 +40,23 @@
             yield tuple(prod)
     print len(list(GetProduct(range(8), repeat=8)))
 >>> 40320
-现在只剩下40320种情况了。
+现在只剩下40320种情况了，可以接受一一遍历了。
 还能再少点吗。
 我们还可以去掉多一些情况，一个皇后周围的八格都是不可以放其他皇后的。
 所以相邻两排的皇后所在的列数一定不相邻。
 >>> result = [x+[y] for x in result for y in pool if (x==[] or ((y not in x) and (y+1!=x[-1]) and (y-1!=x[-1])))]
 现在只有5242种情况了。
-我不用做更多检查了(you can)，5千种情况很快就遍历完了。
+既然都到这了，还能再少点!
+>>> def Check(x, y):
+        if y in x:
+            return False
+        n = len(x)
+        for i in range(1,n+1):
+            if y-i==x[n-i] or y+i==x[n-i]:
+                return Flase
+        return True
+>>> result = [x+[y] for x in result for y in pool if (x==[] or Check(x, y))]
+现在每次在新的一排寻找可用的列的时候，我们排除了所有非法的情况。
 最后我们愉快的得到了92个解。（smile
 
 2. recurse
