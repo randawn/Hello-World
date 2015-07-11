@@ -8,4 +8,9 @@ a la ls -a
 a ll ls -l
 
 a j jobs
+a h history
+
+a p pwd
+a .. cd ..
+a - cd -
 

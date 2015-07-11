@@ -29,6 +29,7 @@ set hidden         " Hide buffers when they are abandoned
 set expandtab
 set shiftwidth=4
    
+set smarttab
 set tabstop=4
 set nobackup
 set nu
@@ -47,3 +48,4 @@ set makeprg=cc\ %<.c
 
 " for the plugin
 " let g:UltiSnipsExpandTrigger = "<tab>"
+
