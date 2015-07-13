@@ -1,6 +1,4 @@
-#!/usr/local/bin/scheme
-;; Happy hacking ran!
-
+;) Happy hacking
 
 10
 (+ 5 3 4)

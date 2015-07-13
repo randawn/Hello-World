@@ -49,3 +49,8 @@ set makeprg=cc\ %<.c
 " for the plugin
 " let g:UltiSnipsExpandTrigger = "<tab>"
 
+
+" scheme
+map <F9> :%!scheme --arg
+
+
