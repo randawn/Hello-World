@@ -1,0 +1,15 @@
+
+;the applicative order?
+
+;尾递归？
+
+(define (new-if predicate then-clause else-clause)
+    (cond (predicate then-clause)
+          (else else-clause))
+)
+
+; 应用序
+; 先求值参数再应用
+; then-clause else-clause 都会被求值
+
+

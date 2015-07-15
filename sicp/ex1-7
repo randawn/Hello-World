@@ -1,0 +1,25 @@
+(load "sicp1.1.7")
+
+(define presice 0.000000001)
+
+(define (sqrtr-iter x guess)
+  (if (bingo guess (refine x guess))
+    (refine x guess)
+    (sqrtr-iter x (refine x guess))))
+
+(define (bingo x y)
+  (if (< (/ (distant x y) y) presice)
+      true
+      false))
+
+(define (sqrtr-iter x guess)
+  (if (bingo guess (refine x guess))
+      (refine x guess)
+      (sqrtr-iter x (refine x guess))))
+
+(define (sqrtr x)
+  (sqrtr-iter x 1.0))
+
+(sqrtr 0.00009)
+
+
