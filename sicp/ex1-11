@@ -1,0 +1,35 @@
+
+
+(define (f n)
+    (if (< n 3)
+        n
+        (+ (f (- n 1))
+           (* 2 (f (- n 2)))
+           (* 3 (f (- n 3))))
+    )
+)
+
+(f 1)
+(f 2)
+(f 3)
+(f 4)
+(f 5)
+
+; dynamic programming
+(define (f n3 n2 n1 count)
+    (if (= count 0)         ;GOTCHA:count=0 not 3 !!!
+        n3
+        (f n2
+           n1
+           (+ (* 3 n3) (* 2 n2) n1)
+           (- count 1))
+    )
+)
+
+
+(f 0 1 2 0)
+(f 0 1 2 1)
+(f 0 1 2 2)
+(f 0 1 2 3)
+(f 0 1 2 4)
+(f 0 1 2 5)

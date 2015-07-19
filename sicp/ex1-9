@@ -1,0 +1,25 @@
+
+(define (dec x)
+    (- x 1))
+
+(define (inc x)
+    (+ x 1))
+
+; 递归的
+(define (add a b)
+    (if (= a 0)
+        b
+        (inc (add (dec a) b))))
+
+(trace add)
+(add 4 5)
+
+; 迭代的
+(define (add a b)
+    (if (= a 0)
+        b
+        (add (dec a) (inc b))))
+
+(trace add)
+(add 4 5)
+

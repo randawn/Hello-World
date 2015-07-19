@@ -1,0 +1,39 @@
+
+
+(define (even? n)
+    (= (remainder  n 2) 0)
+)
+
+(define (square n)
+    (* n n)
+)
+
+(define (expt b n)
+    (cond ((= n 0) 1)
+          ((even? n) (square (expt b (/ n 2))))
+          (else (* b (expt b (- n 1))))
+    )
+)
+
+
+(expt 2 5)
+
+(define (expt a b n)
+    (cond ((= n 0) a)
+          ((even? n) (expt a (square b) (/ n 2)))
+          (else (expt (* a b) b (- n 1)))
+    )
+)
+
+(expt 1 2 10)
+
+(define (expt a b n)
+    (cond ((= n 0) a)
+          ((even? n) (expt a (square b) (/ n 2)))
+          (else (expt (* a b) (square b) (/ (- n 1) 2)))
+    )
+)
+
+(expt 1 2 10)
+
+

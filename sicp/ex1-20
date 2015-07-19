@@ -1,0 +1,14 @@
+
+(define (gcd a b)
+    (if (= b 0)
+        a
+        (gcd b (remainder a b))
+    )
+)
+
+(gcd 206 40)
+
+;gcd 40 (r 206 40)
+;gcd (r 206 40) (r (r 206 40) 40)
+;gcd (r (r 206 40) 40) (r (r (r 206 40) 40) (r 206 40))
+

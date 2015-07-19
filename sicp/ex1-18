@@ -1,0 +1,12 @@
+
+(load "ex1-17")
+
+(define (multi a b s)
+    (cond ((= b 0) s)
+          ((even? b) (multi (double a) (halve b) s))
+          (else (multi (double a) (halve (- b 1)) (+ s a)))
+    )
+)
+
+(multi 3 7 0)
+
