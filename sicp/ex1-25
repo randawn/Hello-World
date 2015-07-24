@@ -1,0 +1,10 @@
+
+;(load "ex1-24")
+
+(define (expmod base exp m)
+    (remainder (expt 1 base exp)
+               m
+    )
+)
+
+

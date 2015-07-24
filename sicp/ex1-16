@@ -21,19 +21,19 @@
 (define (expt a b n)
     (cond ((= n 0) a)
           ((even? n) (expt a (square b) (/ n 2)))
-          (else (expt (* a b) b (- n 1)))
-    )
-)
-
-(expt 1 2 10)
-
-(define (expt a b n)
-    (cond ((= n 0) a)
-          ((even? n) (expt a (square b) (/ n 2)))
           (else (expt (* a b) (square b) (/ (- n 1) 2)))
     )
 )
 
 (expt 1 2 10)
 
+; this is faster than above Y??? TODO
+(define (expt a b n)
+    (cond ((= n 0) a)
+          ((even? n) (expt a (square b) (/ n 2)))
+          (else (expt (* a b) b (- n 1)))
+    )
+)
+
+(expt 1 2 10)
 

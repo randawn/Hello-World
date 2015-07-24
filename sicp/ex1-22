@@ -1,0 +1,57 @@
+
+;(load "ex1-21")
+
+(define (prime? n)
+    (= (smallestDivisor n) n)
+)
+
+; Carmicheal NUM
+;(prime? 561)
+;(prime? 1105)
+;(prime? 1729)
+;(prime? 2465)
+;(prime? 2821)
+;(prime? 6601)
+
+(define (timePrime n)
+    (newline)
+    (display n)
+    (startPrime n (runtime))
+)
+
+(define (startPrime n time)
+    (if (prime? n)
+        (printTime (- (runtime) time))
+        #f
+    )
+)
+
+(define (printTime time)
+    (display " *** ")
+    (display time)
+)
+
+;ex1-22
+(define (findPrime N)
+    (if (timePrime N)
+        #t
+        (findPrime (+ N 1))
+    )
+)
+
+;(findPrime 10000000)
+; 10000019 *** 0.
+;(findPrime 100000000)
+; 100000007 *** .01
+;(findPrime 1000000000)
+; 1000000007 *** .03
+;(findPrime 10000000000)
+; 10000000019 *** .1
+;(findPrime 100000000000)
+; 100000000003 *** .34
+;(findPrime 1000000000000)
+; 1000000000039 *** 1.2
+
+;10 ^ (1/2)
+;Value: 3.16245562280389
+

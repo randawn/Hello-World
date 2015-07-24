@@ -1,0 +1,16 @@
+
+(define (smallestDivisor n)
+    (divise? n 2)
+)
+
+(define (divise? n a)
+    (cond ((=  (remainder n a) 0) a)
+          ((< n (* a a)) n)
+          (else (divise? n (+ a 1)))
+    )
+)
+
+(smallestDivisor 199)
+(smallestDivisor 1999)
+(smallestDivisor 19999)
+

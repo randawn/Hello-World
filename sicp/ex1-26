@@ -1,0 +1,84 @@
+
+; fake
+; do test on ex1-22 ex1-23 ex1-24 ex1-25 here
+(load "ex1-21")
+
+(define (getTime)
+    (real-time-clock)
+)
+
+(load "ex1-22")
+
+(define (timePrime n)
+    (startPrime n (getTime))
+)
+
+(define (printIt n time)
+    (newline)
+    (display n)
+    (display " *** ")
+    (display time)
+)
+
+(define (startPrime n time)
+    (if (prime? n)
+        (printIt n (- (getTime) time))
+        #f
+    )
+)
+
+(define (testSuit)
+    (findPrime 10000)
+    (findPrime 100000)
+    (findPrime 1000000)
+    (findPrime 10000000)
+    (findPrime 100000000)
+    (findPrime 1000000000)
+    (findPrime 10000000000)
+    (findPrime 100000000000)
+)
+
+; result of ex1-22. approximal to 10^(1/2). this is n^(1/2)
+; 10007 *** 0
+; 100003 *** 0
+; 1000003 *** 6
+; 10000019 *** 8
+; 100000007 *** 26
+; 1000000007 *** 76
+; 10000000019 *** 240
+; 100000000003 *** 720
+; ;Value: #t
+
+(load "ex1-23")
+
+; result of ex1-23. approximal 1/2 * n^(1/2)
+;10007 *** 0
+;100003 *** 0
+;1000003 *** 1
+;10000019 *** 7
+;100000007 *** 19
+;1000000007 *** 46
+;10000000019 *** 147
+;100000000003 *** 464
+
+(load "ex1-24")
+; result of ex1-23. not match log(n). (data is 1000x)
+; 10001 *** 82
+; 100001 *** 89
+; 1000001 *** 113
+; 10000001 *** 124
+; 100000001 *** 160
+; 1000000001 *** 169
+; 10000000001 *** 185
+; 100000000001 *** 224
+
+(load "ex1-25")
+; result of ex1-23. not match log(n). (this is very slow)
+; 101 *** 0
+; 1001 *** 0
+; 10001 *** 21
+; 100001 *** 3261
+
+
+;(testSuit)
+
