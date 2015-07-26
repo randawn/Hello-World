@@ -1,0 +1,32 @@
+
+(define (cont-frac n d k)
+    (define (cont-frac-n c)
+        (if (= k c)
+            (/ (n c) (d c))
+            (/ (n c)
+               (+ (d c)
+                  (cont-frac-n (+ c 1)))
+            )
+        )
+    )
+    (cont-frac-n 1)
+)
+
+(cont-frac (lambda (i) 1.0)
+           (lambda (i) 1.0)
+           1000)
+
+(define (cont-frac n d k)
+    (define (iter k ret)
+        (if (< k 1)
+            ret
+            (iter (- k 1) (/ (n k) (+ (d k) ret)))
+        )
+    )
+    (iter (- k 1) (/ (n k) (d k)))
+)
+
+(cont-frac (lambda (i) 1.0)
+           (lambda (i) 1.0)
+           1000)
+

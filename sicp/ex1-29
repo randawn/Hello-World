@@ -1,0 +1,62 @@
+
+(define (sum term a next b)
+    (if (> a b)
+        0
+        (+ (term a)
+           (sum term (next a) next b))
+    )
+)
+
+(define (integral f a b dx)
+    (define (add-dx x) (+ x dx))
+    (* (sum f (+ a (/ dx 2.0)) add-dx b)
+       dx)
+)
+
+(define (cube x)
+    (* x x x)
+)
+
+(integral cube 0 1 0.0001)
+
+; tail recurse version
+(define (sum term a next b ret)
+;    (newline)
+;    (display a)
+    (if (> a b)
+        ret
+        (sum term (next a) next b (+ ret (term a)))
+    )
+)
+
+(define (integral f a b dx)
+    (define (add-dx x) (+ x dx))
+    (* (sum f (+ a (/ dx 2.0)) add-dx b 0)
+       dx)
+)
+
+(integral cube 0 1 0.0001)
+
+; simpson
+
+(define (integral f a b n)
+    (define (y k) (f (+ a (* k (/ (- a b) n)))))
+    (define (get-coef k)
+        (cond ((or (= k 1) (= k n)) 1)
+              ((even? k) 2)
+              (else 4)
+        )
+    )
+    (define (yk k)
+        (* (get-coef k) (y k))
+    )
+    (define (next-k k)
+        (+ k 1)
+    )
+    ;(* (sum yk (exact->inexact 0) next-k n 0)
+    (* (sum yk 0.0 next-k n 0)
+       (/ (/ (- a b) n) 3.0))
+)
+
+(integral cube 0 1 10000)
+

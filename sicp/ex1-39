@@ -1,0 +1,15 @@
+
+(load "ex1-37")
+
+(define (tan-cf x k)
+    (define (d k)
+        (- (* 2 k) 1.0)
+    )
+    (define (n k)
+        (- (* x x))
+    )
+    (/ (cont-frac n d k) (- x))
+)
+
+(tan-cf (/ 3.14 4) 100000)
+

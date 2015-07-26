@@ -1,0 +1,50 @@
+
+(define (filtered-accumulate combiner null-value filter term a next b)
+    (if (> a b)
+        null-value
+        (combiner (if (filter a)
+                      (term a)
+                      null-value
+                  )
+                  (filtered-accumulate combiner null-value filter term (next a) next b)
+        )
+    )
+)
+
+(define (filtered-accumulate combiner null-value filter term a next b)
+    (define (iter a result)
+        (if (> a b)
+            result
+            (iter (next a)
+                  (combiner (if (filter a)
+                                (term a)
+                                null-value
+                            )
+                            result)))
+    )
+    (iter a null-value)
+)
+
+(load "ex1-24")
+
+(define (sum-prime a b)
+    (filtered-accumulate + 0 prime? (lambda (x) x) a (lambda (x) (+ x 1)) b)
+)
+
+(sum-prime 1 10)
+
+(define (gcd a b)
+    (if (= b 0)
+        a
+        (gcd b (remainder a b))
+    )
+)
+(define (product-gcd n)
+    (define (gcd-n a)
+        (= 1 (gcd a n))
+    )
+    (filtered-accumulate * 1 gcd-n (lambda (x) x) 1 (lambda (x) (+ x 1)) n)
+)
+
+(product-gcd 10)
+

@@ -4,7 +4,7 @@
 ;(load "ex1-22")
 
 (define (startPrime n time)
-    (if (fast-prime? n 1)
+    (if (fast-prime? n 10)
         (printIt n (- (getTime) time))
         #f
     )
@@ -23,8 +23,11 @@
     (define (try a)
         (= (expmod a n n) a)
     )
-;    (try (+ 1 (random (- n 1))))
-    (try (- n 1))
+    (if (= n 1)
+        #t
+        (try (+ 1 (random (- n 1))))
+    ;    (try (- n 1))
+    )
 )
 
 (define (fast-prime? n times)
@@ -34,4 +37,7 @@
     )
 )
 
+(define (prime? n)
+    (fast-prime? n 10)
+)
 

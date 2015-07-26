@@ -1,0 +1,34 @@
+
+(load "ex1-29")
+
+(integral cube 0 1 100)
+
+(define (sum term a next b)
+    (define (iter a result)
+        (if (> a b)
+            result
+            (iter (next a) (+ result (term a))))
+    )
+    (iter a 0)
+)
+
+(define (integral f a b n)
+    (define (y k) (f (+ a (* k (/ (- a b) n)))))
+    (define (get-coef k)
+        (cond ((or (= k 1) (= k n)) 1)
+              ((even? k) 2)
+              (else 4)
+        )
+    )
+    (define (yk k)
+        (* (get-coef k) (y k))
+    )
+    (define (next-k k)
+        (+ k 1)
+    )
+    (* (sum yk 0 next-k n)
+       (/ (/ (- a b) n) 3.0))
+)
+
+(integral cube 0 1 100)
+
