@@ -1,0 +1,15 @@
+
+(load "ex1-43")
+(define dx 0.0001)
+(define (smooth f)
+    (lambda (x)
+        (/ (+ (f x) (f (- x dx)) (f (+ x dx))) 3)
+    )
+)
+
+(square 2)
+((smooth square) 2)
+
+(((repeat smooth 10) square) 5)
+
+

@@ -1,0 +1,17 @@
+
+(load "ex1-42")
+
+(define (repeat f n)
+    (define (iter i ret)
+        (if (= i n)
+            ret
+            (iter (+ i 1) (compose f ret))
+        )
+    )
+    (iter 1 f)
+)
+
+((repeat square 2) 5)
+
+((repeat 1+ 10) 2)
+
