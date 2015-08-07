@@ -1,0 +1,27 @@
+
+(define (cons a b)
+    (* (expt 2 a) (expt 3 b))
+)
+
+(define (get-part n1 n2)
+    (define (div-iter c)
+        (if (integer? c )
+            (div-iter (/ c n1))
+            (* c n1)
+        )
+    )
+    (define (mul-iter na n)
+        (if (= na 1)
+            n
+            (mul-iter (/ na n2) (+ n 1))
+        )
+    )
+    (lambda (c) (mul-iter (div-iter c) 0))
+)
+
+(define (car c) ((get-part 3 2) c))
+(define (cdr c) ((get-part 2 3) c))
+
+(car (cons 3 7))
+(cdr (cons 3 7))
+

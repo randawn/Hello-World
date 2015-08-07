@@ -1,0 +1,45 @@
+
+(load "ex2-2")
+
+; build rect from point
+(define (rect pDL pUR)
+    (cons pDL pUR)
+)
+(define (get-pDL rect)
+    (car rect)
+)
+(define (get-pUR rect)
+    (cdr rect)
+)
+
+; build rect from segment
+(define (rectS sL sU)
+    (cons (start-segment sL)
+          (end-segment sU)
+    )
+)
+
+(define (area rect)
+    (* (- (x-point (get-pUR rect)) (x-point (get-pDL rect)))
+       (- (y-point (get-pUR rect)) (y-point (get-pDL rect)))
+    )
+)
+
+(define (peri rect)
+    (* (+ (- (x-point (get-pUR rect)) (x-point (get-pDL rect)))
+          (- (y-point (get-pUR rect)) (y-point (get-pDL rect)))
+       )
+       2)
+)
+
+(peri (rect (make-point 0 0) (make-point 7 3)))
+(area (rect (make-point 0 0) (make-point 7 3)))
+
+(peri (rectS (make-segment (make-point 0 0) (make-point 0 3))
+             (make-segment (make-point 0 3) (make-point 7 3)))
+)
+(area (rectS (make-segment (make-point 0 0) (make-point 0 3))
+             (make-segment (make-point 0 3) (make-point 7 3)))
+)
+
+

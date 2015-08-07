@@ -1,0 +1,12 @@
+
+(load "ex2-7")
+
+(define (sub-interval x y)
+    (add-interval x
+                  (make-interval (- (upper-bound y))
+                                 (- (lower-bound y)))
+    )
+)
+
+(sub-interval r1 r2)
+

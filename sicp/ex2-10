@@ -1,0 +1,22 @@
+
+(load "ex2-7")
+
+(define (div-interval x y)
+    (let ((ly (lower-bound y))
+          (uy (upper-bound y))
+         )
+    (if (and (< ly 0) (> uy 0))
+        (error "ERROR:div-end cross zero")
+        (mul-interval x
+                      (make-interval (/ 1.0 uy)
+                                     (/ 1.0 ly)
+                      )
+        )
+    )
+    )
+)
+
+(define r3 (make-interval -1 1))
+;(div-interval r1 r3)
+
+

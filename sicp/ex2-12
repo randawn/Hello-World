@@ -1,0 +1,22 @@
+
+(load "ex2-7")
+
+(define (make-center-percent center percent)
+    (make-interval (/ (* center (- 100 percent)) 100.0)
+                   (/ (* center (+ 100 percent)) 100.0)
+    )
+)
+
+(define (center x)
+    (+ (lower-bound x) (/ (- (upper-bound x) (lower-bound x)) 2))
+)
+
+(define (percent x)
+    (* 100 (/ (/ (- (upper-bound x) (lower-bound x)) 2) (center x)))
+    )
+)
+
+(define x (make-center-percent 6.8 10))
+(center x)
+(percent x)
+

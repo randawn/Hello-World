@@ -1,0 +1,31 @@
+
+(define (make-rat a b)
+    (define (gcd a b)
+        (if (= b 0)
+            a
+            (gcd b (remainder a b))
+        )
+    )
+    (let ((g (gcd a b)))
+        (cons (/ a g) (/ b g))
+    )
+)
+
+(define (numer rat)
+    (car rat)
+)
+
+(define (denom rat)
+    (cdr rat)
+)
+
+(define (rat)
+    (make-rat -42 49)
+)
+(car (rat))
+(cdr (rat))
+;(let ((rat (make-rat 42 49)))
+;    (display (car rat))
+;    (display (cdr rat))
+;)
+
