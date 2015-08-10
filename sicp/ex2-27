@@ -1,0 +1,34 @@
+
+(load "ex2-18")
+(define x (list (list 1 2) (list 3 4)))
+(reverse-iter x) 
+
+(define (deep-reverse lst)
+    (define (iter-rev lst ret)
+        (cond ((null? lst) ret)
+              ((not (pair? lst)) lst)
+              (else (append (iter-rev (cdr lst) ret)
+                            (cons (iter-rev (car lst) ret) ret)))
+        )
+    )
+    (iter-rev lst '())
+)
+
+(deep-reverse x) 
+
+(define x (list (list (list 1 2) (list 3 4)) (list (list 5 6) (list 7 8))))
+(deep-reverse x) 
+(define x (list (list 1 2) (list 3 4) (list 5 6) (list 7 8)))
+(deep-reverse x) 
+
+; a tricky ver
+(define (deep-reverse lst)
+    (if (pair? lst)
+        (reverse (map deep-reverse lst))
+        lst
+    )
+)
+
+(deep-reverse x) 
+
+

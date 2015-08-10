@@ -1,0 +1,17 @@
+
+(define (fringe t)
+    (define (f-iter lst ret)
+        (cond ((null? lst) ret)
+              ((not (pair? lst)) (list lst))
+              (else (append (f-iter (car lst) ret)
+                            (f-iter (cdr lst) ret)))
+        )
+    )
+    (f-iter t '())
+)
+
+(define x (list (list 1 2) (list 3 4)))
+(trace fringe)
+(fringe x)
+(fringe (list x x))
+

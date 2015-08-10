@@ -1,0 +1,18 @@
+
+
+(define (square-list lst)
+    (define (iter-sl lst ret)
+        (if (null? lst)
+            ret
+            (iter-sl (cdr lst)
+                     (append ret
+                             (list (square (car lst)))))
+        )
+    )
+    (iter-sl lst '())
+)
+
+(square-list (list 1 2 3 4))
+
+
+

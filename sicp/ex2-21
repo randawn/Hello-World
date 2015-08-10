@@ -1,0 +1,16 @@
+
+(define (square-list lst)
+    (map (lambda (x) (* x x))
+         lst
+    )
+)
+
+(define (square-list lst)
+    (if (null? lst)
+        '()
+        (cons (square (car lst)) (square-list (cdr lst)))
+    )
+)
+
+(square-list (list 1 2 3 4))
+

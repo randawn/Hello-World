@@ -1,0 +1,14 @@
+
+(define (for-each f iterobj)
+    (if (null? iterobj)
+        #t
+        (and (for-each f (cdr iterobj))
+             (f (car iterobj))
+        )
+    )
+)
+
+(for-each (lambda (x) (newline) (display x))
+          (list 1 2 3)
+)
+

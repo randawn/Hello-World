@@ -1,0 +1,29 @@
+
+(define (appd lst item)
+    (if (null? lst)
+        (cons item '())
+        (cons (car lst) (appd (cdr lst) item))
+    )
+)
+(define (reverse lst)
+    (if (null? lst)
+        '()
+        (appd (reverse (cdr lst))
+              (car lst)
+        )
+    )
+)
+
+(define (reverse-iter lst)
+    (define (iter-rev lst ret)
+        (if (null? lst)
+            ret
+            (iter-rev (cdr lst) (cons (car lst) ret))
+        )
+    )
+    (iter-rev lst '())
+)
+
+(reverse (list 1 2 3)) 
+(reverse-iter (list 1 2 3)) 
+
