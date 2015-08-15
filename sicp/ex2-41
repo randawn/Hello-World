@@ -1,0 +1,32 @@
+
+(load "ex2-40")
+
+; or use permutation !
+(define (unique-tris n)
+    (accumulate append
+                '()
+                (flatmap (lambda (i)
+                                  (map (lambda (j)
+                                           (map (lambda (k) (list i j k))
+                                                (enumerate-interval 1 (- j 1))
+                                           )
+                                       )
+                                       (enumerate-interval 1 (- i 1))
+                                  )
+                          )
+                          (enumerate-interval 1 n)
+                )
+    )
+)
+
+
+
+(define (make-s-tri s)
+    (filter (lambda (l) (= s (+ (car l) (cadr l) (caddr l))))
+            (unique-tris s)
+    )
+)
+
+(unique-tris 5)
+(make-s-tri 10)
+

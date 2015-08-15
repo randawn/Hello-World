@@ -1,0 +1,76 @@
+
+(define (accumulate f init seq)
+    (if (null? seq)
+        init
+        (f (car seq)
+           (accumulate f init (cdr seq))
+        )
+    )
+)
+(define (prime? n)
+    (define (iter i ret)
+        (if (or (> (* i i) n) (not ret))
+            (and (not (= 2 n)) ret)
+            (iter (+ i 1) (not (= (remainder n i) 0)))
+        )
+    )
+    (iter 2 #t)
+)
+(define (enumerate-interval s e)
+    (if (> s e)
+        '()
+        (cons s (enumerate-interval (+ s 1) e))
+    )
+)
+(define (flatmap proc seq)
+    (accumulate append '() (map proc seq))
+)
+
+(define (make-pair-sum p)
+    (list (car p) (cadr p) (+ (car p) (cadr p)))
+)
+
+(define (prime-sum? p)
+    (prime? (+ (car p) (cadr p)))
+)
+
+(define (prime-sum-pairs n)
+    (map make-pair-sum 
+         (filter prime-sum?
+                 (flatmap (lambda (i)
+                                  (map (lambda (j) (list i j))
+                                       (enumerate-interval 1 (- i 1))
+                                  )
+                          )
+                          (enumerate-interval 1 n)
+                 )
+         )
+    )
+)
+
+(prime-sum-pairs 6)
+
+(define (unique-pairs n)
+    (accumulate append
+                '()
+                (map (lambda (i) (map (lambda (j) (list i j))
+                                      (enumerate-interval 1 (- i 1))
+                                 )
+                     )
+                     (enumerate-interval 1 n)
+                )
+    )
+)
+
+(unique-pairs 6)
+
+(define (prime-sum-pairs n)
+    (map make-pair-sum 
+         (filter prime-sum?
+                 (unique-pairs n)
+         )
+    )
+)
+
+(prime-sum-pairs 6)
+
