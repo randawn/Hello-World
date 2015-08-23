@@ -1,0 +1,78 @@
+#lang racket
+(require (planet "sicp.ss" ("soegaard" "sicp.plt" 2 1)))
+;(load "ex2-37")
+;TODO basic "sicp.ss" use cons not list to form the basic vect and line
+;need more familiar with the diff.
+
+(define (accumulate op initial sequence)
+    (if (null? sequence)
+        initial
+        (op (car sequence)
+            (accumulate op initial (cdr sequence)))
+    )
+)
+
+(define (dot-product v w)
+    (accumulate + 0 (map * v w))
+)
+
+(define (matrix-*-vector m v)
+    (map (lambda (row) (dot-product row v))
+         m
+    )
+)
+
+(define (make-mv-matrix vect)
+    (list (list 1 0 (car vect))
+          (list 0 1 (cdr vect))
+          (list 0 0 1)
+    )
+)
+
+(define (mv-v1-by-v2 v1 v2)
+    (reverse
+    (cdr
+    (reverse
+        (matrix-*-vector (make-mv-matrix v2)
+                         ;(append v1 (list 1))
+                         (list (car v1) (cdr v1) 1)
+        )
+    )
+    )
+    )
+)
+
+(define (s-to-v s)
+    (make-vect (- (cadr s) (caar s))
+               (- (cddr s) (cadr s))
+    )
+)
+
+(define (mv-s1-by-s2 s1 s2)
+    (let ((v2 (s-to-v s2)))
+        (make-segment (mv-v1-by-v2 (car s1) v2)
+                      (mv-v1-by-v2 (cdr s1) v2)
+        )
+    )
+)
+
+(define (edge-painter frame)
+    (let ((f1 (frame-edge1 frame))
+          (f2 (frame-edge2 frame)))
+         (display f1)
+         (display f2)
+         (display (mv-s1-by-s2 f1 f2))
+         (segments->painter (list f1
+                                  f2
+                                  ;(mv-s1-by-s2 f1 f2)
+                            )
+         )
+    )
+)
+
+(define frame (make-frame (make-segment (make-vect 0 0) (make-vect 0 0))
+                          (make-segment (make-vect 0 0) (make-vect 0 1))
+                          (make-segment (make-vect 0 0) (make-vect 1 0))))
+
+(paint (edge-painter frame))
+

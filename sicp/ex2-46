@@ -1,0 +1,28 @@
+
+(define (make-vect x y)
+    (list x y)
+)
+
+(define (add-vect v1 v2)
+    (make-vect (+ (car v1) (car v2))
+               (+ (cadr v1) (cadr v2))
+    )
+)
+(define (sub-vect v1 v2)
+    (make-vect (- (car v1) (car v2))
+               (- (cadr v1) (cadr v2))
+    )
+)
+
+(define (scale-vect s v)
+    (make-vect (* s (car v))
+               (* s (cadr v))
+    )
+)
+
+(define v1 (make-vect 1 2))
+(define v2 (make-vect 3 4))
+(add-vect v1 v2)
+(sub-vect v1 v2)
+(scale-vect 2 v1)
+
