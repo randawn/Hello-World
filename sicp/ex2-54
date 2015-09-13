@@ -1,0 +1,27 @@
+
+(define (memq item x)
+    (cond ((null? x) #f)
+          ((eq? item (car x)) x)
+          (else (memq item (cdr x)))
+    )
+)
+
+(define (equal? x y)
+    (cond ((and (symbol? x) (symbol? y)) (eq? x y))
+          ((and (null? x) (null? y)) #t)
+          ((or  (null? x) (null? y)) #f)
+          ((and (list? x) (list? y))
+           (and (eq? (car x) (car y))
+                (equal? (cdr x) (cdr y))
+           )
+          )
+          (else #f)
+    )
+)
+
+(equal? '(this is a list) '(this is a ))
+(equal? '(this is a list) '(this is a lst))
+(equal? 'this 'this )
+(equal? '(this is a list) '(this (is a) list))
+
+

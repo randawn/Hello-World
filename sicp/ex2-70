@@ -1,0 +1,22 @@
+
+(load "ex2-67")
+(load "ex2-68")
+(load "ex2-69")
+
+(define pairs '((A 2) (NA 16) (BOOM 1) (SHA 3) (GET 2) (YIP 9) (JOB 2) (WAH 1)))
+(define rTree (generate-huffman-tree pairs))
+(define message
+    '(get a job
+      Sha na na na na na na na na
+      Get a job
+      Sha na na na na na na na na
+      Wah yip yip yip yip yip yip yip yip yip
+      Sha boom
+     )
+)
+
+(define mist (encode message rTree))
+(decode mist rTree)
+
+
+

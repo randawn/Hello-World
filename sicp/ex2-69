@@ -1,0 +1,43 @@
+
+(load "ex2-68")
+
+(define (generate-huffman-tree pairs)
+    (successive-merge (make-leaf-set pairs))
+)
+(define (adjoin-set x set)
+    (cond ((null? set) (list x))
+          ((< (weight x) (weight (car set))) (cons x set))
+          (else (cons (car set)
+                      (adjoin-set x (cdr set))
+                )
+          )
+    )
+)
+(define (make-leaf-set pairs)
+    (if (null? pairs)
+        '()
+        (let ((pair (car pairs)))
+            (adjoin-set (make-leaf (car pair)   ; symbol
+                                   (cadr pair)  ; frequency
+                        )
+                        (make-leaf-set (cdr pairs))
+            )
+        )
+    )
+)
+
+(define pairs '((A 8) (B 3) (C 1) (D 1) (E 1) (F 1) (G 1) (H 1)))
+(define pairs '((A 4) (B 2) (C 1) (D 1)))
+(make-leaf-set pairs)
+
+(define (successive-merge leaf-set)
+    (if (= (length leaf-set) 2)
+        leaf-set
+        (let ((merged (make-code-tree (car leaf-set) (cadr leaf-set))))
+            (successive-merge (adjoin-set merged (cddr leaf-set)))
+        )
+    )
+)
+
+(generate-huffman-tree pairs)
+
