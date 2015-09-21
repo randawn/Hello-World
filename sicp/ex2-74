@@ -1,0 +1,6 @@
+
+(define get-record)
+(define get-salary)
+(define find-employee-record)
+
+
