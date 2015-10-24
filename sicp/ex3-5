@@ -1,0 +1,46 @@
+
+(define (rand-in-range low high)
+    (+ low (random (* 1.0 (- high low))))
+)
+
+(define (pow x)
+    (expt x 2)
+)
+
+(define (monte-carlo trials experiment)
+    (define (iter trials-remaining trials-passed)
+        (cond ((= trials-remaining 0) (/ trials-passed trials))
+              ((experiment)
+                  (iter (- trials-remaining 1) (+ trials-passed 1))
+              )
+              (else
+                  (iter (- trials-remaining 1) trials-passed)
+              )
+        )
+    )
+    (iter trials 0)
+)
+
+(define (rect-cycle-test x1 x2 y1 y2)
+    (let ((x (+ x1 (/ (- x2 x1) 2.0)))
+          (y (+ y1 (/ (- y2 y1) 2.0)))
+         )
+         (lambda ()
+             (<= (+ (pow (- (rand-in-range x1 x2) x))
+                    (pow (- (rand-in-range y1 y2) y)))
+                 (pow 3)
+             )
+         )
+    )
+)
+
+(define (estimate-integral P x1 x2 y1 y2 trials)
+    (let ((r (/ (- x2 x1) 2.0)))
+         (/ (* (* (- x2 x1) (- y2 y1))
+               (monte-carlo trials (P x1 x2 y1 y2)))
+         (pow r))
+    )
+)
+
+(estimate-integral rect-cycle-test 2 8 4 10 10000)
+

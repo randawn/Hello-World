@@ -1,0 +1,53 @@
+
+(define (make-account balance passwd)
+    (define (withdraw amount)
+        (if (>= balance amount)
+            (begin (set! balance (- balance amount))
+                   balance
+            )
+            "Insufficient funds"
+        )
+    )
+    (define (deposit amount)
+           (set! balance (+ balance amount))
+           balance
+    )
+    (define (verify key)
+        (eq? passwd key)
+    )
+    (define (dispatch m k)
+        (cond ((eq? m 'verify) verify)
+              ((not (verify k)) (lambda x "Incorrect password"))
+              ((eq? m 'withdraw) withdraw)
+              ((eq? m 'deposit) deposit)
+              (else (error "Unknown requset -- MAKE-ACCOUNT" m))
+        )
+    )
+    dispatch
+)
+
+(define acc (make-account 100 'gogogo))
+((acc 'withdraw 'gogogo) 50)
+((acc 'withdraw 'gogog) 70)
+((acc 'deposit 'gogogo) 50)
+
+(define (make-joint old-acc old-key new-key)
+    (cond ((not ((old-acc 'verify old-key) old-key)) (error "ERROR: key not match old"))
+          ((eq? new-key 'rosebud) 
+               (lambda (m k)
+                    (if (eq? k new-key)
+                        (acc m old-key)
+                        (acc m new-key)
+                    )
+               )
+          )
+          (else (error "ERROR: key not match new"))
+    )
+)
+
+(define paul-acc
+    (make-joint acc 'gogogo 'rosebud)
+)
+
+((paul-acc 'withdraw 'rosebud) 10)
+

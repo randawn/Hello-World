@@ -1,0 +1,46 @@
+
+(define (make-account balance passwd)
+    (define (withdraw amount)
+        (if (>= balance amount)
+            (begin (set! balance (- balance amount))
+                   balance
+            )
+            "Insufficient funds"
+        )
+    )
+    (define (deposit amount)
+           (set! balance (+ balance amount))
+           balance
+    )
+    (define err-cnt 0)
+    (define (wrong-passwd x)
+        (if (< err-cnt 3)
+            (begin (set! err-cnt (+ 1 err-cnt))
+                   "Incorrect password"
+            )
+            (call-the-cops)
+        )
+    )
+    (define (call-the-cops)
+        "wo yao bao jing la!"
+    )
+    (define (dispatch m k)
+        (cond ((not (eq? k passwd)) wrong-passwd)
+              ((eq? m 'withdraw) withdraw)
+              ((eq? m 'deposit) deposit)
+              (else (error "Unknown requset -- MAKE-ACCOUNT" m))
+        )
+    )
+    dispatch
+)
+
+(define acc (make-account 100 'gogogo))
+((acc 'withdraw 'gogogo) 50)
+((acc 'withdraw 'gogog) 70)
+((acc 'withdraw 'gogog) 70)
+((acc 'withdraw 'gogog) 70)
+((acc 'withdraw 'gogog) 70)
+((acc 'deposit 'gogogo) 50)
+
+
+

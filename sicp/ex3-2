@@ -1,0 +1,26 @@
+
+(define (make-monitored f)
+    (define cnt 0)
+    (lambda (x)
+        (cond ((eq? x 'how-many-calls?) cnt)
+              ((eq? x 'reset-counter)
+                    (begin (set! cnt 0)
+                           cnt))
+              (else (begin (set! cnt (+ cnt 1))
+                           (f x)
+                    )
+              )
+        )
+    )
+)
+
+(define s (make-monitored sqrt))
+(s 100)
+(s 100)
+(s 100)
+(s 'how-many-calls?)
+(s 'reset-counter)
+(s 'how-many-calls?)
+
+(sqrt 100)
+

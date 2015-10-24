@@ -1,0 +1,48 @@
+
+(define (rand-update s)
+    (let ((a #xdeadbeef)
+          (b #xcafebabe)
+          (m 1024.0)
+         )
+         (modulo (+ (* a s) b) m)
+    )
+)
+
+(define rand0
+    (let ((x 10))
+        (lambda ()
+            (set! x (rand-update x))
+            x)
+    )
+)
+
+(define rand3
+    (let ((x 20))
+        (define (dispatch k)
+            (cond ((eq? k 'generate) 
+                       (begin (set! x (rand-update x))
+                              x)
+                  )
+                  ((eq? k 'reset)
+                       (lambda (r)
+                            (set! x r))
+                  )
+                  (else "ERROR:" k)
+            )
+        )
+        dispatch
+    )
+)
+
+(rand3 'generate)
+(rand3 'generate)
+(rand3 'generate)
+((rand3 'reset) 10)
+(rand3 'generate)
+(rand3 'generate)
+(rand3 'generate)
+((rand3 'reset) 10)
+(rand3 'generate)
+(rand3 'generate)
+(rand3 'generate)
+

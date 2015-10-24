@@ -1,0 +1,18 @@
+
+(define f
+    (let ((s 1))
+        (lambda (x)
+            (if (= s 1)
+                (begin (set! s x)
+                       s
+                )
+                s
+            )
+        )
+    )
+)
+
+;(trace f)
+(+ (f 0) (f 1))
+(+ (f 1) (f 0))
+
