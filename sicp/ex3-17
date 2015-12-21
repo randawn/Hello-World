@@ -1,0 +1,61 @@
+
+(define count-uni
+    ((lambda (aux-list)
+         (define (count-pairs x)
+             (cond ((not (pair? x)) 0)
+                   ((memq x aux-list) 0)
+                   (else (begin (if (null? aux-list)    
+                                    (set! aux-list (list x))
+                                    (set-cdr! (last-pair aux-list) (list x))
+                                )
+                                ;(append! aux-list x) ?
+                                (+ (count-pairs (car x))
+                                   (count-pairs (cdr x))
+                                   1
+                                )
+                         )
+                   )
+             )
+         )
+         count-pairs
+      )
+      '()
+    )
+)
+
+(define (count-pairs z)
+    (let ((aux '()))
+        (define (count x)
+            (cond ((not (pair? x)) 0)
+                  ((memq x aux) 0)
+                  (else ;(append! aux x)
+                        (if (null? aux)
+                            (set! aux (list x))
+                            (set-cdr! (last-pair aux) (list x))
+                        )
+                        (display aux)
+                        (+ (count (car x))
+                           (count (cdr x))
+                           1
+                        )
+                  )
+            )
+        )
+        (count z)
+    )
+)
+
+
+(define list3 '(a b c))
+(define lt (list 1))
+(define ltt (cons lt lt))
+(define list4 (cons 'a ltt))
+(define list7 (cons ltt ltt))
+
+;(count-uni list3)
+;(count-uni list4)
+(count-uni list7)
+;(count-pairs list3)
+;(count-pairs list4)
+;(count-pairs list7)
+

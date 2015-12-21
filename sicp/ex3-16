@@ -1,0 +1,21 @@
+
+(define (count-pairs x)
+    (if (not (pair? x))
+        0
+        (+ (count-pairs (car x))
+           (count-pairs (cdr x))
+           1
+        )
+    )
+)
+
+(define list3 '(a b c))
+(define lt (list 1))
+(define ltt (cons lt lt))
+(define list4 (cons 'a ltt))
+(define list7 (cons ltt ltt))
+
+(count-pairs list3)
+(count-pairs list4)
+(count-pairs list7)
+
