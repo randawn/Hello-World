@@ -78,6 +78,7 @@
   <ItemGroup>
     <Text Include="ch1_7_datain.txt" />
     <Text Include="ch1_7_dataout.txt" />
+    <Text Include="ch3_1_datain.txt" />
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
@@ -89,6 +90,8 @@
     <ClCompile Include="cppEssential.cpp" />
     <ClCompile Include="ch1.cpp" />
     <ClCompile Include="ch2.cpp" />
+    <ClCompile Include="ch3.cpp" />
+    <ClCompile Include="ch4.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>

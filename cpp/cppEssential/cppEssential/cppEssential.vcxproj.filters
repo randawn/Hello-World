@@ -22,6 +22,9 @@
     <Text Include="ch1_7_dataout.txt">
       <Filter>Source Files</Filter>
     </Text>
+    <Text Include="ch3_1_datain.txt">
+      <Filter>Source Files</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -45,6 +48,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ch2.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ch3.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ch4.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
