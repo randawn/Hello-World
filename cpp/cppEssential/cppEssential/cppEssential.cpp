@@ -9,4 +9,3 @@ int _tmain(int argc, _TCHAR* argv[])
 	ch4_5();
 	return 0;
 }
-

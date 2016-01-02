@@ -67,18 +67,50 @@ private:
 };
 
 void ch4_5();
+template <typename T>
 class Matrix
 {
-	friend ostream& operator<<(ostream&, Matrix &);
+	template <typename U>
+	friend ostream& operator<<(ostream &, const Matrix<U> &);
 public:
 	Matrix();
-	Matrix(float flt_arr[16]);
+	Matrix(int row, int col);	// ch6_2
+	~Matrix();	// ch6_2
+	Matrix(T T_arr[16]);
 	Matrix operator+(Matrix &);
 	Matrix operator*(Matrix &);
 	void operator+=(Matrix &);
-	float& operator()(int row, int column);
-	float operator()(int row, int column) const;
+	T& operator()(int row, int column);
+	T operator()(int row, int column) const;
 private:
-	vector<vector<float> > m_2dmat;
+	vector<vector<T> > m_2dmat;
+	int m_row;
+	int m_col;
 };
 
+void ch5_1();
+template <typename T>
+class StackT
+{
+public:
+	bool pop(T &);
+	bool push(const T &);
+	int size() const { return m_stk.size(); }
+	bool empty() const { return m_stk.empty(); }
+	bool full() const { return size() == m_stk.max_size(); }
+	bool peek(T &) const;
+	void print();
+protected:
+	vector<T> m_stk;
+};
+template <typename T>
+class LIFO_Stack : public StackT<T>
+{
+
+};
+template <typename T>
+class Peekback_Stack : public StackT<T>
+{
+public:
+	bool peekback(T &, int n=0) const;
+};

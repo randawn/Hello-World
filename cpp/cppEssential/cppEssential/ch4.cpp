@@ -110,8 +110,8 @@ void ch4_5()
 		flt_arr0[i] = float(i);
 		flt_arr1[i] = float(i+1);
 	}
-	Matrix mat0(flt_arr0);
-	Matrix mat1(flt_arr1);
+	Matrix<float> mat0(4, 4);
+	Matrix<float> mat1(flt_arr1);
 	cout << mat0;
 	cout << mat1;
 	cout << mat0+mat1;
@@ -119,60 +119,81 @@ void ch4_5()
 	mat0 += mat0;
 	cout << mat0;
 }
-ostream& operator<<(ostream& os, Matrix &mat)
+template <typename T>
+ostream& operator<<(ostream& os, const Matrix<T> &mat)
 {
 	os << "MATRIX:\n";
-	for (vector<vector<float> >::const_iterator it = mat.m_2dmat.cbegin();
+	for (vector<vector<T> >::const_iterator it = mat.m_2dmat.cbegin();
 		it != mat.m_2dmat.cend(); it++)
 	{
-		for (vector<float>::const_iterator itt = it->cbegin(); itt != it->cend(); itt++){
+		for (vector<T>::const_iterator itt = it->cbegin(); itt != it->cend(); itt++){
 			os << *itt << setw(5) << internal;
 		}
 		os << '\n';
 	}
 	return os;
 }
-Matrix::Matrix()
+template <typename T>
+Matrix<T>::Matrix()
 {
-	vector<float> vec4(4, 0);
+	vector<T> vec4(4, 0);
 	for (int i = 0; i < 4; i++)
 		m_2dmat.push_back(vec4);
 }
-Matrix::Matrix(float flt_arr[16])
+template <typename T>
+Matrix<T>::Matrix(T flt_arr[16])
 	:Matrix()
 {
 	for (int i = 0; i < 16; i++) {
 		m_2dmat[i / 4][i % 4] = flt_arr[i];
 	}
 }
-Matrix Matrix::operator+(Matrix &rh_mat)
+template <typename T>
+Matrix<T>::Matrix(int row, int col)
+	:m_row(row),
+	m_col(col)
+{
+	for (int i = 0; i < row; i++) {
+		vector<T> vec_row(col, T());
+		m_2dmat.push_back(vec_row);
+	}
+}
+template <typename T>
+Matrix<T>::~Matrix()
+{
+}
+template <typename T>
+Matrix<T> Matrix<T>::operator+(Matrix &rh_mat)
 {
 	Matrix ret_mat;
-	for (int i = 0; i < 16; i++) {
-		ret_mat(i / 4, i % 4) = (*this)(i / 4, i % 4) + rh_mat(i / 4, i % 4);
+	for (int i = 0; i < m_row*m_col; i++) {
+		ret_mat(i / m_col, i % m_col) = (*this)(i / m_col, i % m_col) + rh_mat(i / m_col, i % m_col);
 	}
 	return ret_mat;
 }
-Matrix Matrix::operator*(Matrix &rh_mat)
+template <typename T>
+Matrix<T> Matrix<T>::operator*(Matrix<T> &rh_mat)
 {
 	Matrix ret_mat;
-	for (int i = 0; i < 16; i++) {
-		ret_mat(i / 4, i % 4) = (*this)(i / 4, i % 4) * rh_mat(i / 4, i % 4);
+	for (int i = 0; i < m_row*m_col; i++) {
+		ret_mat(i / m_col, i % m_col) = (*this)(i / m_col, i % m_col) * rh_mat(i / m_col, i % m_col);
 	}
 	return ret_mat;
 }
-void Matrix::operator+=(Matrix &rh_mat)
+template <typename T>
+void Matrix<T>::operator+=(Matrix<T> &rh_mat)
 {
-	for (int i = 0; i < 16; i++) {
-		(*this)(i / 4, i % 4) += rh_mat(i / 4, i % 4);
+	for (int i = 0; i < m_row*m_col; i++) {
+		(*this)(i / m_col, i % m_col) += rh_mat(i / m_col, i % m_col);
 	}
 }
-float& Matrix::operator()(int row, int column)
+template <typename T>
+T& Matrix<T>::operator()(int row, int column)
 {
 	return (this->m_2dmat)[row][column];
 }
-float Matrix::operator()(int row, int column) const
+template <typename T>
+T Matrix<T>::operator()(int row, int column) const
 {
 	return (this->m_2dmat)[row][column];
 }
-
