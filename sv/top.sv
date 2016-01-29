@@ -29,4 +29,10 @@ initial begin
     env.execute();
     $stop();
 end
+
+initial begin
+  $fsdbDumpfile("dump.fsdb");
+  $fsdbDumpvars(0, "top");
+end
+
 endmodule

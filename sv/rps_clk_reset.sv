@@ -1,7 +1,7 @@
 module rps_clk_reset(
-    output bit clk, rst;
+    output bit clk, rst
 );
-parameter ACT_RST = 1;
+parameter bit ACT_RST = 0;
 
 task run(
     int rst_hold=4,
@@ -18,4 +18,5 @@ task run(
         #half_period; clk=!clk;
     end
 endtask
+
 endmodule

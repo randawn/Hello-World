@@ -21,12 +21,12 @@ class rps_c;
     task rps_rand();
         bit[1:0] tmp;
         tmp = $urandom_range(3);
-        if(temp=='b0)
-            temp=2'b1;
+        if(tmp=='b0)
+            tmp=2'b1;
         case(tmp)
-            `b01:rps=ROCK;
-            `b10:rps=PAPER;
-            `b11:rps=SCISSOR;
+            'b01:rps=ROCK;
+            'b10:rps=PAPER;
+            'b11:rps=SCISSOR;
         endcase
     endtask
 endclass
@@ -34,9 +34,8 @@ endclass
 function void report_play(
     string where, rps_c t1, rps_c t2);
     string str;
-    $sformat(str,
-        "t1:rps, t2:rps - score1=%0d, score2=%0d", t1.score, t2.score);
-    $display("% s", str);
+    $sformat(str, "t1:rps, t2:rps - score1=%0d, score2=%0d", t1.score, t2.score);
+    $display("%s", str);
 endfunction
 
 class sti_gen;
@@ -49,12 +48,13 @@ class sti_gen;
 
     task gen_sti;
         rps_c tmp;
-        forever begin
+        //forever begin
+        repeat (10) begin
             if(stop==0) begin
                 tmp = new;
                 tmp.rps_rand();
                 $display("time:%0d gen %d send stimulus %s",
-                    $time, id, tmp.rps);
+                   $time, id, tmp.rps);
                 fifo.put(tmp);
             end else begin
                 break;
@@ -95,27 +95,14 @@ class rps_sc;
     local function check_score;
         string str;
         bit win1, win2;
-        if(score1 != t1.score) begin
-            $sformat(str,
-                "MISMATCH score1: %0d, t1.score1: %0d",
-                score1, t1.score1);
-            $display("SBD %s", str);
-        end
-        if(score2 != t2.score) begin
-            $sformat(str,
-                "MISMATCH score2: %0d, t2.score2: %0d",
-                score2, t2.score2);
-            $display("SBD %s", str);
-        end
-
         win1 = (
             (t1.rps == ROCK     && t2.rps == SCISSOR) |
-            (t1.rps == PAPER    && t2.rps == PAPER) |
-            (t1.rps == SCISSOR  && t2.rps == ROCK));
+            (t1.rps == SCISSOR  && t2.rps == PAPER) |
+            (t1.rps == PAPER    && t2.rps == ROCK));
         win2 = (
             (t2.rps == ROCK     && t1.rps == SCISSOR) |
-            (t2.rps == PAPER    && t1.rps == PAPER) |
-            (t2.rps == SCISSOR  && t1.rps == ROCK));
+            (t2.rps == SCISSOR  && t1.rps == PAPER) |
+            (t2.rps == PAPER    && t1.rps == ROCK));
 
         if (win1)
             score1 += 1;
@@ -124,12 +111,26 @@ class rps_sc;
         else
             tie_score += 1;
 
-        if((t1.score >= limit) || (t2.score >= limit)) begin
-            test_done = 1;
+        if(score1 != t1.score) begin
+            $sformat(str,
+                "MISMATCH score1: %0d, t1.score: %0d",
+                score1, t1.score);
+            $display("SBD %s", str);
+        end
+        if(score2 != t2.score) begin
+            $sformat(str,
+                "MISMATCH score2: %0d, t2.score: %0d",
+                score2, t2.score);
+            $display("SBD %s", str);
         end
 
         $display("time %0d pass comp: score1: %0d score2: %0d tie_score: %d",
             $time, score1, score2, tie_score);
+
+        if((t1.score >= limit) || (t2.score >= limit)) begin
+            test_done = 1;
+            $finish();
+        end
 
     endfunction
 endclass

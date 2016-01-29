@@ -20,7 +20,7 @@ class rps_env;
         ap2 = new;
 
         sb = new(ap1, ap2);
-        sb.limit = 10;
+        sb.limit = 3;
 
         s1.fifo = f1;
         s2.fifo = f2;
@@ -32,6 +32,7 @@ class rps_env;
 
     task execute;
         fork
+            terminate;
             s1.gen_sti();
             s2.gen_sti();
             d1.run();
@@ -39,8 +40,7 @@ class rps_env;
             m1.run();
             m2.run();
             sb.run();
-            terminate;
-        join_any
+        join
     endtask
 
     task terminate;

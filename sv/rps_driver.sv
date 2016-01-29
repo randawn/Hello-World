@@ -1,3 +1,4 @@
+import rps_env_pkg::*;
 class rps_driver1;
     mailbox #(rps_c) fifo;
     rps_c trans;

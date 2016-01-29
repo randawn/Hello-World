@@ -1,3 +1,4 @@
+
 class rps_mon1;
     mailbox #(rps_c) fifo;
     function rps_c pin2trans;
