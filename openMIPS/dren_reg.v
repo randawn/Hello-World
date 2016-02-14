@@ -5,7 +5,7 @@ module dren_reg
     input rst_,
     input en,
     input [WIDTH-1:0] d,
-    output reg [WIDTH-1:0] q,
+    output reg [WIDTH-1:0] q
 );
 
 always @(posedge clk) begin

@@ -1,10 +1,10 @@
-vcs script version : E-2011.03
+vcs script version : H-2013.06
 machine name = ubuntu 
-machine type = linux 
+machine type = amd64 
 machine os = Linux 3.19.0-25-generic  
-The FLEXlm host ID of this machine is "000c297f8532"
-Compiler version = VCS E-2011.03
-VCS Build Date = Feb 23 2011 20:58:21
+The FLEXlm host ID of this machine is "000c29826983"
+Compiler version = VCS-MX H-2013.06_Full64
+VCS Build Date = May 30 2013 22:47:11
 Please Note:
 Not all the compile-time and runtime options described in this file
 work in VCS Basic. For a list of options that do not  work in 
@@ -71,14 +71,13 @@ Compile-Time Options
    Pass options to C compiler. Multiple -CFLAGS are allowed. Allows
    passing of C compiler optimization levels.
 
--cm line|cond|fsm|tgl|path|branch|assert
+-cm line|cond|fsm|tgl|branch|assert
    Specifies compiling for the specified type or types of coverage.
    The arguments specifies the types of coverage:
    line   Compile for line or statement coverage.
    cond   Compile for condition coverage.
    fsm    Compile for FSM coverage.
    tgl    Compile for toggle coverage.
-   path   Compile for path coverage.
    branch Compine for branch coverage
    assert Compile for SystemVerilog assertion coverage.
 
@@ -130,7 +129,7 @@ Compile-Time Options
    times.
 
 -cm_dir <directory_path_name>
-   Specifies and alternative name and location for the coverage
+   Specifies an alternative name and location for the coverage
    database directory.
 
 -cm_fsmcfg <filename>
@@ -235,10 +234,6 @@ Compile-Time Options
 
 -cpp
    Specifies a C++ compiler.
-
--comp64
-   Compiles the design in 64 bit mode and creates a 32 bit executable
-   for simulating in 32 bit mode.
 
 -debug
    Enables the use of UCLI commands and DVE.
@@ -890,11 +885,6 @@ Compile-Time Options
    Tells VCS to display a list of bidirectional registered mixed-signal
    nets.
 
-+prof
-   Specifies that VCS writes the vcs.prof file during simulation that 
-   tells you the module definitions, module instances, and Verilog
-   constructs in your design that use the most CPU time.
-
 +protect[<file_suffix>]
    Creates a protected source file; only encrypting `protect/`endprotect 
    regions.
@@ -1169,14 +1159,13 @@ Runtime Options
 
       -assert maxfail=10+maxsuccess=20+success+filter
 
--cm line|cond|fsm|tgl|path|branch|assert
+-cm line|cond|fsm|tgl|branch|assert
    Specifies monitoring for the specified type or types of coverage. 
    The arguments specifies the types of coverage:
    line   Monitor for line or statement coverage.
    cond   Monitor for condition coverage.
    fsm    Monitor for FSM coverage.
    tgl    Monitor for toggle coverage.
-   path   Monitor for path coverage.
    branch Monitor for branch coverage.
    assert Monitor for SystemVerilog assertions coverage.
 
@@ -1649,4 +1638,4 @@ VCS_WARNING_ATSTAR
    list that must be exceeded before VCS displays a warning. The default
    limit is 100 signals.
 
-PDF files for the VCS documentation set are in $VCS_HOME/doc/UserGuide.
+PDF files for the VCS documentation set are in $VCS_HOME/doc/UserGuide. 

@@ -1,34 +1,11 @@
 
-ifndef CROSS_COMPILE
-CROSS_COMPILE = mips-sde-elf-
-endif
+EXE       =vcs
+VCS_OPT   =+v2k -debug -sverilog -full64 +lint=all,noVCDE
+NOVAS_PLI =-P /home/ran/EDA/synopsys/verdi/share/PLI/VCS/LINUX64/novas.tab /home/ran/EDA/synopsys/verdi/share/PLI/VCS/LINUX64/pli.a
+FILE      =-f f.lst
 
-export CROSS_COMPILE
-
-CC = $(CROSS_COMPILE)as
-LD = $(CROSS_COMPILE)ld
-OBJCOPY = $(CROSS_COMPILE)objcopy
-OBJDUMP = $(CROSS_COMPILE)objdump
-
-OBJECTS = inst_rom.o
-
-all: inst_rom.data
-
-%.o: %.S
-	$(CC) -mips32 $< -o $@
-
-inst_rom.om: ram.ld $(OBJECTS)
-	$(LD) -T ram.ld $(OBJECTS) -o $@
-
-inst_rom.bin: inst_rom.om
-	$(OBJCOPY) -O binary $< $@
-
-inst_rom.data: inst_rom.bin bin2mem
-	./bin2mem $<
-
-bin2mem: bin2mem.c
-	cc -o bin2mem -Wall bin2mem.c
+all:
+	${EXE} ${VCS_OPT} ${NOVAS_PLI} ${FILE}
 
 clean:
-	rm -f *.o *.om *.bin *.data
-
+	rm ./simv ./simv.daidir/ csrc/ dump.fsdb novas_dump.log ucli.key verdiLog/ novas.rc novas.conf -rf

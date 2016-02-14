@@ -1,16 +1,16 @@
 module ex(
     input rst_,
     
-    input [7:0]  ex_alu_op,
-    input [2:0]  ex_alu_sel,
-    input [31:0] ex_reg0,
-    input [31:0] ex_reg1,
-    input [4:0]  ex_wd,
-    input ex_wreg,
+    input [7:0]  ex_i_alu_op,
+    input [2:0]  ex_i_alu_sel,
+    input [31:0] ex_i_reg0,
+    input [31:0] ex_i_reg1,
+    input [4:0]  ex_i_waddr,
+    input ex_i_wreg,
 
-    output reg [4:0] ex_wd_o,
-    output reg ex_wreg_o,
-    output reg [31:0] ex_wdata_o,
+    output reg [4:0] ex_o_waddr,
+    output reg ex_o_wreg,
+    output reg [31:0] ex_o_wdata
 );
 
 reg [31:0] logicout;
@@ -19,9 +19,9 @@ always @* begin
     if (!rst_) begin
         logicout = 'b0;
     end else begin
-        case (ex_alu_op)
+        case (ex_i_alu_op)
             `EXE_OR_OP: begin
-                logicout = ex_reg0 | ex_reg1;
+                logicout = ex_i_reg0 | ex_i_reg1;
             end
             default: begin
                 logicout = 'b0;
@@ -32,18 +32,18 @@ end
 
 always @* begin
     if (!rst_) begin
-        ex_wreg_o = 'b0;
+        ex_o_wreg = 'b0;
     end else begin
-        ex_wreg_o = ex_wreg;
-        ex_wd_o = ex_wd;
-        case (ex_alu_sel) begin
+        ex_o_wreg = ex_i_wreg;
+        ex_o_waddr= ex_i_waddr;
+        case (ex_i_alu_sel)
             `EXE_RES_LOGIC: begin
-                ex_wdata_o = logicout;
+                ex_o_wdata = logicout;
             end
             default: begin
-                ex_wdata_o = 'b0;
+                ex_o_wdata = 'b0;
             end
-        end
+        endcase
     end
 end
 

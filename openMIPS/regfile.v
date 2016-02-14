@@ -9,7 +9,7 @@ module regfile(
     output [31:0] rdata0,
     input re1,
     input [4:0] raddr1,
-    output [31:0] rdata1,
+    output [31:0] rdata1
 );
 
 reg [31:0] regs [0:31];
@@ -20,13 +20,13 @@ always @(posedge clk) begin
     end
 end
 
-wire rdata0 = !rst_ ? 'b0:
-              !re0  ? 'b0:
-              (raddr0=='b0) ? 'b0:
-              ((raddr0==waddr) && we) ? wdata: regs[raddr0];
-wire rdata1 = !rst_ ? 'b0:
-              !re1  ? 'b0:
-              (raddr1=='b0) ? 'b0:
-              ((raddr1==waddr) && we) ? wdata: regs[raddr1];
+assign rdata0 = !rst_ ? 'b0:
+                !re0  ? 'b0:
+                (raddr0=='b0) ? 'b0:
+                ((raddr0==waddr) && we) ? wdata: regs[raddr0];
+assign rdata1 = !rst_ ? 'b0:
+                !re1  ? 'b0:
+                (raddr1=='b0) ? 'b0:
+                ((raddr1==waddr) && we) ? wdata: regs[raddr1];
 
 endmodule

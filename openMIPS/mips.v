@@ -4,28 +4,84 @@ module mips(
 
     input [31:0] inst_data,
     output [31:0] pc,
-    output pc_vld,
+    output pc_vld
 );
 
-//if_pc,
-//if_pc_vld,
+// output
+wire [31:0] if_o_pc;
+wire if_o_pc_vld;
 pc_reg u_pc_reg(.*);
 
-// if_pc,
-if_inst,
-// id_pc,
-// id_inst,
+// output
+assign pc = if_o_pc;
+assign pc_vld = if_o_pc_vld;
+
+// input
+wire [31:0] if_o_inst = inst_data;
+
+// output
+wire [31:0] id_i_pc;
+wire [31:0] id_i_inst;
 if_id u_if_id(.*);
 
-//we,
-//waddr,
-//wdata,
-//re0,
-//raddr0,
-//rdata0,
-//re1,
-//raddr1,
-//rdata1,
+// input
+wire [31:0] reg0_data;
+wire [31:0] reg1_data;
+// output
+wire reg0_read;
+wire reg1_read;
+wire [4:0] reg0_addr;
+wire [4:0] reg1_addr;
+// output
+wire [7:0] id_o_alu_op;
+wire [2:0] id_o_alu_sel;
+wire [31:0] id_o_reg0;
+wire [31:0] id_o_reg1;
+wire [4:0] id_o_waddr;
+wire id_o_wreg;
+id u_id(.*);
+
+// output
+wire [7:0] ex_i_alu_op;
+wire [2:0] ex_i_alu_sel;
+wire [31:0] ex_i_reg0;
+wire [31:0] ex_i_reg1;
+wire [4:0] ex_i_waddr;
+wire ex_i_wreg;
+id_ex u_id_ex(.*);
+
+//ex_alu_op,
+//ex_alu_sel,
+//ex_reg0,
+//ex_reg1,
+//ex_waddr,
+//ex_wreg,
+
+// output
+wire [4:0] ex_o_waddr;
+wire ex_o_wreg;
+wire [31:0] ex_o_wdata;
+ex u_ex(.*);
+
+// output
+wire [4:0] mem_i_waddr;
+wire mem_i_wreg;
+wire [31:0] mem_i_wdata;
+ex_mem u_ex_mem(.*);
+
+wire [4:0] mem_o_waddr;
+wire mem_o_wreg;
+wire [31:0] mem_o_wdata;
+mem u_mem(.*);
+
+// output
+wire [4:0] wb_i_waddr;
+wire wb_i_wreg;
+wire [31:0] wb_i_wdata;
+mem_wb u_mem_wb(.*);
+
+// output
+// input of id
 regfile u_regfile(
     .re0(reg0_read),
     .raddr0(reg0_addr),
@@ -33,74 +89,11 @@ regfile u_regfile(
     .re1(reg1_read),
     .raddr1(reg1_addr),
     .rdata1(reg1_data),
-    .we(wb_wreg),
-    .waddr(wb_wd),
-    .wdata(wb_wdata),
+    .we(wb_i_wreg),
+    .waddr(wb_i_waddr),
+    .wdata(wb_i_wdata),
     .*
 );
 
-//id_pc,
-//id_inst,
-
-//reg0_data,
-//reg1_data,
-//reg0_read,
-//reg1_read,
-//reg0_addr,
-//reg1_addr,
-
-//id_alu_op,
-//id_alu_sel,
-//id_reg0,
-//id_reg1,
-//id_wd,
-//id_wreg,
-
-id u_id(.*);
-
-//id_alu_op,
-//id_alu_sel,
-//id_reg0,
-//id_reg1,
-//id_wd,
-//id_wreg,
-
-//ex_alu_op,
-//ex_alu_sel,
-//ex_reg0,
-//ex_reg1,
-//ex_wd,
-//ex_wreg,
-id_ex u_id_ex(.*);
-
-//ex_alu_op,
-//ex_alu_sel,
-//ex_reg0,
-//ex_reg1,
-//ex_wd,
-//ex_wreg,
-
-//ex_wd_o,
-//ex_wreg_o,
-//ex_wdata_o,
-ex u_ex(.*);
-
-
-//ex_wd_o,
-//ex_wreg_o,
-//ex_wdata_o,
-//mem_wd,
-//mem_wreg,
-//mem_wdata,
-ex_mem u_ex_mem(.*);
-
-//mem_wd,
-//mem_wreg,
-//mem_wdata,
-
-//wb_wd,
-//wb_wreg,
-//wb_wdata,
-mem u_mem(.*);
-
 endmodule
+
