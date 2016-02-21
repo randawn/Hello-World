@@ -2,7 +2,7 @@ module mips(
     input clk,
     input rst_,
 
-    input [31:0] inst_data,
+    input [31:0] inst,
     output [31:0] pc,
     output pc_vld
 );
@@ -17,16 +17,13 @@ assign pc = if_o_pc;
 assign pc_vld = if_o_pc_vld;
 
 // input
-wire [31:0] if_o_inst = inst_data;
+wire [31:0] if_o_inst = inst;
 
 // output
 wire [31:0] id_i_pc;
 wire [31:0] id_i_inst;
 if_id u_if_id(.*);
 
-// input
-wire [31:0] reg0_data;
-wire [31:0] reg1_data;
 // output
 wire reg0_read;
 wire reg1_read;
@@ -81,7 +78,8 @@ wire [31:0] wb_i_wdata;
 mem_wb u_mem_wb(.*);
 
 // output
-// input of id
+wire [31:0] reg0_data;
+wire [31:0] reg1_data;
 regfile u_regfile(
     .re0(reg0_read),
     .raddr0(reg0_addr),

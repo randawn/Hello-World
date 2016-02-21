@@ -5,6 +5,14 @@ module id(
     input [31:0] reg0_data,
     input [31:0] reg1_data,
 
+    // forwarding
+    input ex_o_wreg,
+    input [4:0] ex_o_waddr,
+    input [31:0] ex_o_wdata,
+    input mem_o_wreg,
+    input [4:0] mem_o_waddr,
+    input [31:0] mem_o_wdata,
+
     output reg reg0_read,
     output reg reg1_read,
     output reg [4:0] reg0_addr,
@@ -32,8 +40,8 @@ wire [25:0] addr = id_i_inst[25:0];
 
 reg inst_vld;
 
-assign reg0_addr = rt;
-assign reg1_addr = rs;
+assign reg0_addr = rs;
+assign reg1_addr = rt;
 // DECODE
 always @* begin
     if (!rst_) begin
@@ -65,6 +73,10 @@ end
 always @* begin
     if (!rst_) begin
         id_o_reg0 = 'b0;
+    end else if ((reg0_read && ex_o_wreg) && (reg0_addr==ex_o_waddr)) begin
+        id_o_reg0 = ex_o_wdata;
+    end else if ((reg0_read && mem_o_wreg) && (reg0_addr==mem_o_waddr)) begin
+        id_o_reg0 = mem_o_wdata;
     end else if (reg0_read) begin
         id_o_reg0 = reg0_data;
     end else if (!reg0_read) begin
@@ -77,6 +89,10 @@ end
 always @* begin
     if (!rst_) begin
         id_o_reg1 = 'b0;
+    end else if ((reg1_read && ex_o_wreg) && (reg1_addr==ex_o_waddr)) begin
+        id_o_reg1 = ex_o_wdata;
+    end else if ((reg1_read && mem_o_wreg) && (reg1_addr==mem_o_waddr)) begin
+        id_o_reg1 = mem_o_wdata;
     end else if (reg1_read) begin
         id_o_reg1 = reg1_data;
     end else if (!reg1_read) begin

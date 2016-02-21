@@ -8,8 +8,8 @@ module ex(
     input [4:0]  ex_i_waddr,
     input ex_i_wreg,
 
-    output reg [4:0] ex_o_waddr,
     output reg ex_o_wreg,
+    output reg [4:0] ex_o_waddr,
     output reg [31:0] ex_o_wdata
 );
 

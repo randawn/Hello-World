@@ -23,10 +23,12 @@ end
 assign rdata0 = !rst_ ? 'b0:
                 !re0  ? 'b0:
                 (raddr0=='b0) ? 'b0:
-                ((raddr0==waddr) && we) ? wdata: regs[raddr0];
+                ((raddr0==waddr) && we) ? wdata:
+                                   regs[raddr0];
 assign rdata1 = !rst_ ? 'b0:
                 !re1  ? 'b0:
                 (raddr1=='b0) ? 'b0:
-                ((raddr1==waddr) && we) ? wdata: regs[raddr1];
+                ((raddr1==waddr) && we) ? wdata:
+                                   regs[raddr1];
 
 endmodule

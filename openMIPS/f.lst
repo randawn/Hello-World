@@ -13,3 +13,5 @@ mem.v
 mem_wb.v
 regfile.v
 mips.v
+inst_rom.v
+mips_tb.v
