@@ -2,6 +2,7 @@ module mips(
     input clk,
     input rst_,
 
+    input inst_vld,
     input [31:0] inst,
     output [31:0] pc,
     output pc_vld
@@ -18,9 +19,11 @@ assign pc_vld = if_o_pc_vld;
 
 // input
 wire [31:0] if_o_inst = inst;
+wire if_o_inst_vld = inst_vld;
 
 // output
 wire [31:0] id_i_pc;
+wire id_i_inst_vld;
 wire [31:0] id_i_inst;
 if_id u_if_id(.*);
 

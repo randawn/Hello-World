@@ -16,6 +16,7 @@ initial begin
     #10000 $finish;
 end
 
+wire inst_vld;
 wire [31:0] inst;
 wire [31:0] pc;
 wire pc_vld;

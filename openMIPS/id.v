@@ -1,6 +1,7 @@
 module id(
     input rst_,
     input [31:0] id_i_pc,
+    input id_i_inst_vld,
     input [31:0] id_i_inst,
     input [31:0] reg0_data,
     input [31:0] reg1_data,
@@ -31,14 +32,23 @@ wire [5:0] op = id_i_inst[31:26];
 wire [4:0] rs = id_i_inst[25:21];
 wire [4:0] rt = id_i_inst[20:16];
 wire [4:0] rd = id_i_inst[15:11];
-wire [4:0] sa = id_i_inst[10:6];
-wire [5:0] func = id_i_inst[5:0];
+wire [4:0] shamt = id_i_inst[10:6];
+wire [5:0] funct = id_i_inst[5:0];
+
+wire [2:0] op_grp = op[5:3];
+wire [2:0] op_idx = op[2:0];
+wire [2:0] func_grp = funct[5:3];
+wire [2:0] func_idx = funct[2:0];
 // I type
 wire [15:0] imme = id_i_inst[15:0];
 // J type
 wire [25:0] addr = id_i_inst[25:0];
 
 reg inst_vld;
+
+reg reg_imme;
+reg reg0_sft, reg1_sft;
+reg reg0_imme_up, reg1_imme_up;
 
 assign reg0_addr = rs;
 assign reg1_addr = rt;
@@ -47,6 +57,10 @@ always @* begin
     if (!rst_) begin
         reg0_read = 'b0;
         reg1_read = 'b0;
+        reg0_sft = 'b0;
+        reg1_sft = 'b0;
+        reg0_imme_up = 'b0;
+        reg1_imme_up = 'b0;
 
         id_o_alu_op = 'b0;
         id_o_alu_sel = 'b0;
@@ -54,18 +68,193 @@ always @* begin
         id_o_reg1 = 'b0;
         id_o_waddr = 'b0;
         id_o_wreg = 'b0;
-    end else begin
-        case (op)
-            `EXE_ORI: begin
+    end else if(id_i_inst_vld) begin
+        reg0_read = 'b0;
+        reg1_read = 'b0;
+        reg0_sft = 'b0;
+        reg1_sft = 'b0;
+        reg0_imme_up = 'b0;
+        reg1_imme_up = 'b0;
+
+        id_o_alu_op = 'b0;
+        id_o_alu_sel = 'b0;
+        id_o_reg0 = 'b0;
+        id_o_reg1 = 'b0;
+        id_o_waddr = 'b0;
+        id_o_wreg = 'b0;
+
+        id_o_waddr = rd;
+        case (op_grp)
+            `INS_OP_GRP_BASIC: begin
+                case(op_idx)
+                    3'b000: begin                       // R-format
+                        case (func_grp)
+                            `INS_FUNC_GRP_SHT: begin    // func shift
+                                id_o_wreg = 'b1;        // shift register left/right by the distance indicated by immediate shamt
+                                reg1_read = 'b1;        // or the register rs and put the result in register rd.
+                                case (func_idx)
+                                    3'b000: begin       // op *sll* shift left logical
+                                        id_o_alu_op = `EXE_OP_SLL;
+                                        id_o_alu_sel= `EXE_RES_SHIFT;
+                                        reg0_sft = 'b1;
+                                    end
+                                    3'b001: begin
+                                    end
+                                    3'b010: begin       // op *srl* shift right logical
+                                        id_o_alu_op = `EXE_OP_SRL;
+                                        id_o_alu_sel= `EXE_RES_SHIFT;
+                                        reg0_sft = 'b1;
+                                    end
+                                    3'b011: begin       // op *sra* shift right arithmetic
+                                        id_o_alu_op = `EXE_OP_SRA;
+                                        id_o_alu_sel= `EXE_RES_SHIFT;
+                                        reg0_sft = 'b1;
+                                    end
+                                    3'b100: begin       // op *sllv* sll variable
+                                        id_o_alu_op = `EXE_OP_SLL;
+                                        id_o_alu_sel= `EXE_RES_SHIFT;
+                                        reg0_read = 'b1;
+                                    end
+                                    3'b101: begin
+                                    end
+                                    3'b110: begin       // op *srlv* srl variable
+                                        id_o_alu_op = `EXE_OP_SRL;
+                                        id_o_alu_sel= `EXE_RES_SHIFT;
+                                        reg0_read = 'b1;
+                                    end
+                                    3'b111: begin       // op *srav* sra variable
+                                        id_o_alu_op = `EXE_OP_SRA;
+                                        id_o_alu_sel= `EXE_RES_SHIFT;
+                                        reg0_read = 'b1;
+                                    end
+                                endcase
+                            end
+                            `INS_FUNC_GRP_JMP: begin
+                                case (func_idx)
+                                    3'b000: begin       // op *jr* jump register
+                                    end
+                                    3'b001: begin       // op *jalr* jump and link
+                                    end
+                                    3'b010: begin
+                                    end
+                                    3'b011: begin
+                                    end
+                                    3'b100: begin       // op ** syscall
+                                    end
+                                    3'b101: begin       // op ** break
+                                    end
+                                    3'b110: begin
+                                    end
+                                    3'b111: begin       // op *sync*
+                                        id_o_alu_op = `EXE_OP_NOP;
+                                        id_o_alu_sel= `EXE_RES_NOP;
+                                        reg1_read = 'b1;
+                                    end
+                                endcase
+                            end
+                            `INS_FUNC_GRP_MTH: begin
+                            end
+                            `INS_FUNC_GRP_MUL: begin
+                            end
+                            `INS_FUNC_GRP_BAS: begin    // 
+                                id_o_wreg = 'b1;
+                                reg0_read = 'b1;
+                                reg1_read = 'b1;
+                                case (func_idx)
+                                    3'b000: begin       // op *add*
+                                    end
+                                    3'b001: begin       // op *addu*
+                                    end
+                                    3'b010: begin       // op *substract*
+                                    end
+                                    3'b011: begin       // op *subu*
+                                    end
+                                    3'b100: begin       // op *and*
+                                        id_o_alu_op = `EXE_OP_AND;
+                                        id_o_alu_sel= `EXE_RES_LOGIC;
+                                    end
+                                    3'b101: begin       // op *or*
+                                        id_o_alu_op = `EXE_OP_OR;
+                                        id_o_alu_sel= `EXE_RES_LOGIC;
+                                    end
+                                    3'b110: begin       // op *xor*
+                                        id_o_alu_op = `EXE_OP_XOR;
+                                        id_o_alu_sel= `EXE_RES_LOGIC;
+                                    end
+                                    3'b111: begin       // op *nor*
+                                        id_o_alu_op = `EXE_OP_NOR;
+                                        id_o_alu_sel= `EXE_RES_LOGIC;
+                                    end
+                                endcase
+                            end
+                            `INS_FUNC_GRP_SET: begin
+                            end
+                        endcase
+                    end
+                endcase
+            end
+            `INS_OP_GRP_IMM: begin
                 id_o_wreg = 'b1;
-                id_o_alu_op = `EXE_OR_OP;
-                id_o_alu_sel = `EXE_RES_LOGIC;
-                reg0_read = 'b1;
                 id_o_waddr = rt;
+                reg0_read = 'b1;
+                id_o_alu_sel= `EXE_RES_LOGIC;
+                case (op_idx)
+                    3'b000: begin   // op *addi*
+                    end
+                    3'b001: begin   // op *addiu*
+                    end
+                    3'b010: begin   // op *slti* set less than imm.
+                    end
+                    3'b011: begin   // op *sltiu* slti unsigned
+                    end
+                    3'b100: begin   // op *andi*
+                        id_o_alu_op = `EXE_OP_AND;
+                    end
+                    3'b101: begin   // op *ori*
+                        id_o_alu_op = `EXE_OP_OR;
+                    end
+                    3'b110: begin   // op *xori*
+                        id_o_alu_op = `EXE_OP_XOR;
+                    end
+                    3'b111: begin   // op *lui* load upper imm.
+                        id_o_alu_op = `EXE_OP_OR;   // PSEODU INST
+                        reg1_imme_up = 'b1;
+                    end
+                endcase
+            end
+            `INS_OP_GRP_TLB: begin
+            end
+            `INS_OP_GRP_LOAD: begin
+            end
+            `INS_OP_GRP_STORE: begin
+            end
+            `INS_OP_GRP_FPLD: begin
+                case (op_idx)
+                    3'b011: begin   // op *pref*
+                        id_o_alu_op = `EXE_OP_NOP;
+                        id_o_alu_sel= `EXE_RES_NOP;
+                    end
+                endcase
+            end
+            `INS_OP_GRP_FPST: begin
             end
             default: begin
             end
         endcase
+    end else begin
+        reg0_read = 'b0;
+        reg1_read = 'b0;
+        reg0_sft = 'b0;
+        reg1_sft = 'b0;
+        reg0_imme_up = 'b0;
+        reg1_imme_up = 'b0;
+
+        id_o_alu_op = 'b0;
+        id_o_alu_sel = 'b0;
+        id_o_reg0 = 'b0;
+        id_o_reg1 = 'b0;
+        id_o_waddr = 'b0;
+        id_o_wreg = 'b0;
     end
 end
 
@@ -79,6 +268,10 @@ always @* begin
         id_o_reg0 = mem_o_wdata;
     end else if (reg0_read) begin
         id_o_reg0 = reg0_data;
+    end else if (reg0_sft) begin
+        id_o_reg0 = shamt;
+    end else if (reg0_imme_up) begin
+        id_o_reg0 = {imme, 16'b0};
     end else if (!reg0_read) begin
         id_o_reg0 = imme;
     end else begin
@@ -95,6 +288,10 @@ always @* begin
         id_o_reg1 = mem_o_wdata;
     end else if (reg1_read) begin
         id_o_reg1 = reg1_data;
+    end else if (reg1_sft) begin
+        id_o_reg1 = shamt;
+    end else if (reg1_imme_up) begin
+        id_o_reg1 = {imme, 16'b0};
     end else if (!reg1_read) begin
         id_o_reg1 = imme;
     end else begin

@@ -5,6 +5,7 @@ NOVAS_PLI =-P /home/ran/EDA/synopsys/verdi/share/PLI/VCS/LINUX64/novas.tab /home
 FILE      =-f f.lst
 
 all:
+	cd bench; make;
 	${EXE} ${VCS_OPT} ${NOVAS_PLI} ${FILE}
 
 clean:
