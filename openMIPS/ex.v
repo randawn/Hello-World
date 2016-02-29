@@ -10,11 +10,90 @@ module ex(
 
     output reg ex_o_wreg,
     output reg [4:0] ex_o_waddr,
-    output reg [31:0] ex_o_wdata
+    output reg [31:0] ex_o_wdata,
+
+    // hilo
+    input [31:0] ex_i_rdata_hi,
+    input [31:0] ex_i_rdata_lo,
+    output reg ex_o_re_hilo,
+    output reg [31:0] ex_o_wdata_hi,
+    output reg [31:0] ex_o_wdata_lo,
+    output reg ex_o_we_hilo,
+
+    // forwarding
+    input mem_o_we_hilo,
+    input [31:0] mem_o_wdata_hi,
+    input [31:0] mem_o_wdata_lo,
+    input wb_o_we_hilo,
+    input [31:0] wb_o_wdata_hi,
+    input [31:0] wb_o_wdata_lo
 );
 
 reg [31:0] logicout;
 reg [31:0] shiftout;
+reg [31:0] moveout;
+reg [31:0] reghi;
+reg [31:0] reglo;
+
+// forwarding
+always @* begin
+    if (!rst_) begin
+        reghi = 'b0;
+        reglo = 'b0;
+    end else if (mem_o_we_hilo) begin
+        reghi = mem_o_wdata_hi;
+        reglo = mem_o_wdata_lo;
+    end else if (wb_o_we_hilo) begin
+        reghi = wb_o_wdata_hi;
+        reglo = wb_o_wdata_lo;
+    end else begin
+        reghi = ex_i_rdata_hi;
+        reglo = ex_i_rdata_lo;
+    end
+end
+
+always @* begin
+    if (!rst_) begin
+        moveout = 'b0;
+        ex_o_re_hilo = 'b0;
+        ex_o_wdata_hi = 'b0;
+        ex_o_wdata_lo = 'b0;
+        ex_o_we_hilo = 'b0;
+    end else begin
+        case (ex_i_alu_op)
+            `EXE_OP_MOVZ: begin
+                moveout = ex_i_reg0;
+            end
+            `EXE_OP_MOVN: begin
+                moveout = ex_i_reg0;
+            end
+            `EXE_OP_MFHI: begin
+                moveout = reghi;
+                ex_o_re_hilo = 'b1;
+            end
+            `EXE_OP_MFLO: begin
+                moveout = reglo;
+                ex_o_re_hilo = 'b1;
+            end
+            `EXE_OP_MTHI: begin
+                ex_o_we_hilo = 'b1;
+                ex_o_wdata_hi = ex_i_reg0;
+                ex_o_wdata_lo = reglo;
+                ex_o_re_hilo = 'b1;
+            end
+            `EXE_OP_MTLO: begin
+                ex_o_we_hilo = 'b1;
+                ex_o_wdata_hi = reghi;
+                ex_o_wdata_lo = ex_i_reg0;
+                ex_o_re_hilo = 'b1;
+            end
+            default: begin
+                ex_o_we_hilo = 'b0;
+                ex_o_re_hilo = 'b0;
+            end
+        endcase
+    end
+end
 
 always @* begin
     if (!rst_) begin
@@ -74,6 +153,9 @@ always @* begin
             end
             `EXE_RES_SHIFT: begin
                 ex_o_wdata = shiftout;
+            end
+            `EXE_RES_MOVE: begin
+                ex_o_wdata = moveout;
             end
             default: begin
                 ex_o_wdata = 'b0;

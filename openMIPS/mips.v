@@ -50,37 +50,55 @@ wire [4:0] ex_i_waddr;
 wire ex_i_wreg;
 id_ex u_id_ex(.*);
 
-//ex_alu_op,
-//ex_alu_sel,
-//ex_reg0,
-//ex_reg1,
-//ex_waddr,
-//ex_wreg,
-
 // output
-wire [4:0] ex_o_waddr;
+wire ex_o_we_hilo;
+wire [31:0] ex_o_wdata_hi;
+wire [31:0] ex_o_wdata_lo;
 wire ex_o_wreg;
+wire [4:0] ex_o_waddr;
 wire [31:0] ex_o_wdata;
 ex u_ex(.*);
 
 // output
+wire mem_i_we_hilo;
+wire [31:0] mem_i_wdata_hi;
+wire [31:0] mem_i_wdata_lo;
 wire [4:0] mem_i_waddr;
 wire mem_i_wreg;
 wire [31:0] mem_i_wdata;
 ex_mem u_ex_mem(.*);
 
+// output
 wire [4:0] mem_o_waddr;
 wire mem_o_wreg;
 wire [31:0] mem_o_wdata;
+wire mem_o_we_hilo;
+wire [31:0] mem_o_wdata_hi;
+wire [31:0] mem_o_wdata_lo;
 mem u_mem(.*);
 
 // output
-wire [4:0] wb_i_waddr;
+wire wb_i_we_hilo;
+wire [31:0] wb_i_wdata_hi;
+wire [31:0] wb_i_wdata_lo;
 wire wb_i_wreg;
+wire [4:0] wb_i_waddr;
 wire [31:0] wb_i_wdata;
 mem_wb u_mem_wb(.*);
 
 // output
+wire wb_o_we_hilo;
+wire [31:0] wb_o_wdata_hi;
+wire [31:0] wb_o_wdata_lo;
+wire wb_o_wreg;
+wire [4:0] wb_o_waddr;
+wire [31:0] wb_o_wdata;
+wb u_wb(.*);
+
+// output
+wire [31:0] ex_i_rdata_hi;
+wire [31:0] ex_i_rdata_lo;
+wire ex_o_re_hilo;
 wire [31:0] reg0_data;
 wire [31:0] reg1_data;
 regfile u_regfile(
@@ -90,9 +108,15 @@ regfile u_regfile(
     .re1(reg1_read),
     .raddr1(reg1_addr),
     .rdata1(reg1_data),
-    .we(wb_i_wreg),
-    .waddr(wb_i_waddr),
-    .wdata(wb_i_wdata),
+    .we(wb_o_wreg),
+    .waddr(wb_o_waddr),
+    .wdata(wb_o_wdata),
+    .we_hilo(wb_o_we_hilo),
+    .wdata_hi(wb_o_wdata_hi),
+    .wdata_lo(wb_o_wdata_lo),
+    .re_hilo(ex_o_re_hilo),
+    .rdata_hi(ex_i_rdata_hi),
+    .rdata_lo(ex_i_rdata_lo),
     .*
 );
 

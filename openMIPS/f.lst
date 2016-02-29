@@ -11,6 +11,7 @@ ex.v
 ex_mem.v
 mem.v
 mem_wb.v
+wb.v
 regfile.v
 mips.v
 inst_rom.v

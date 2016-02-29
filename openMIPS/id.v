@@ -135,9 +135,19 @@ always @* begin
                                     end
                                     3'b001: begin       // op *jalr* jump and link
                                     end
-                                    3'b010: begin
+                                    3'b010: begin       // op *movz* move conditional on zero
+                                        id_o_alu_op = `EXE_OP_MOVZ;
+                                        id_o_alu_sel= `EXE_RES_MOVE;
+                                        reg0_read = 'b1;
+                                        reg1_read = 'b1;
+                                        id_o_wreg = reg1_data == 'b0;
                                     end
-                                    3'b011: begin
+                                    3'b011: begin       // op *movn* mov on not zero
+                                        id_o_alu_op = `EXE_OP_MOVN;
+                                        id_o_alu_sel= `EXE_RES_MOVE;
+                                        reg0_read = 'b1;
+                                        reg1_read = 'b1;
+                                        id_o_wreg = reg1_data != 'b0;
                                     end
                                     3'b100: begin       // op ** syscall
                                     end
@@ -152,7 +162,35 @@ always @* begin
                                     end
                                 endcase
                             end
-                            `INS_FUNC_GRP_MTH: begin
+                            `INS_FUNC_GRP_HILO: begin
+                                case (func_idx)
+                                    3'b000: begin       // op *mfhi* move from hi register
+                                        id_o_alu_op = `EXE_OP_MFHI;
+                                        id_o_alu_sel= `EXE_RES_MOVE;
+                                        id_o_wreg = 'b1;
+                                    end
+                                    3'b001: begin       // op *mthi* move to hi register
+                                        id_o_alu_op = `EXE_OP_MTHI;
+                                        reg0_read = 'b1;
+                                    end
+                                    3'b010: begin       // op *mflo* move from low register
+                                        id_o_alu_op = `EXE_OP_MFLO;
+                                        id_o_alu_sel= `EXE_RES_MOVE;
+                                        id_o_wreg = 'b1;
+                                    end
+                                    3'b011: begin       // op *mtlo* move to hi register
+                                        id_o_alu_op = `EXE_OP_MTLO;
+                                        reg0_read = 'b1;
+                                    end
+                                    3'b100: begin
+                                    end
+                                    3'b101: begin
+                                    end
+                                    3'b110: begin
+                                    end
+                                    3'b111: begin
+                                    end
+                                endcase
                             end
                             `INS_FUNC_GRP_MUL: begin
                             end
