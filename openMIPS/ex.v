@@ -32,6 +32,7 @@ module ex(
 reg [31:0] logicout;
 reg [31:0] shiftout;
 reg [31:0] moveout;
+reg [31:0] arithout;
 reg [31:0] reghi;
 reg [31:0] reglo;
 
@@ -52,6 +53,7 @@ always @* begin
     end
 end
 
+// hi low
 always @* begin
     if (!rst_) begin
         moveout = 'b0;
@@ -95,6 +97,7 @@ always @* begin
     end
 end
 
+// logic
 always @* begin
     if (!rst_) begin
         logicout = 'b0;
@@ -119,6 +122,7 @@ always @* begin
     end
 end
 
+// shift
 always @* begin
     if (!rst_) begin
         shiftout = 'b0;
@@ -140,6 +144,34 @@ always @* begin
         endcase
     end
 end
+
+// arith
+wire [31:0] ex_i_reg1_comp = ~ex_i_reg1 + 1;
+always @* begin
+    if (!rst_) begin
+        arithout = 'b0;
+    end else begin
+        case (ex_i_alu_op)
+            `EXE_OP_SLT: begin
+                arithout = (ex_i_reg0[31] && !ex_i_reg1[31]) ||
+                           ((!ex_i_reg0[31] && !ex_i_reg1[31]) && (ex_i_reg0<ex_i_reg1))  ||
+                           ((!ex_i_reg0[31] && !ex_i_reg1[31]) && (ex_i_reg0>ex_i_reg1));
+            end
+            `EXE_OP_SLTU: begin
+                arithout = ex_i_reg0<ex_i_reg1;
+            end
+            `EXE_OP_ADD, `EXE_OP_ADDI, `EXE_OP_ADDU, `EXE_OP_ADDIU: begin
+                arithout = ex_i_reg0 + ex_i_reg1;
+            end
+            `EXE_OP_SUB, `EXE_OP_SUBU: begin
+                arithout = ex_i_reg0 + ex_i_reg1_comp;
+            end
+            `EXE_OP_CLZ:
+            `EXE_OP_CLO:
+        endcase
+    end
+end
+
 
 always @* begin
     if (!rst_) begin

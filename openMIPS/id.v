@@ -46,9 +46,9 @@ wire [25:0] addr = id_i_inst[25:0];
 
 reg inst_vld;
 
-reg reg_imme;
 reg reg0_sft, reg1_sft;
 reg reg0_imme_up, reg1_imme_up;
+reg reg0_imme_sign, reg1_imme_sign;
 
 assign reg0_addr = rs;
 assign reg1_addr = rt;
@@ -61,6 +61,8 @@ always @* begin
         reg1_sft = 'b0;
         reg0_imme_up = 'b0;
         reg1_imme_up = 'b0;
+        reg0_imme_sign = 'b0;
+        reg1_imme_sign = 'b0;
 
         id_o_alu_op = 'b0;
         id_o_alu_sel = 'b0;
@@ -75,6 +77,8 @@ always @* begin
         reg1_sft = 'b0;
         reg0_imme_up = 'b0;
         reg1_imme_up = 'b0;
+        reg0_imme_sign = 'b0;
+        reg1_imme_sign = 'b0;
 
         id_o_alu_op = 'b0;
         id_o_alu_sel = 'b0;
@@ -193,6 +197,27 @@ always @* begin
                                 endcase
                             end
                             `INS_FUNC_GRP_MUL: begin
+                                //id_o_wreg = 'b1;
+                                reg0_read = 'b1;
+                                reg1_read = 'b1;
+                                case (func_idx)
+                                    3'b000: begin       // op *mult*
+                                        id_o_alu_op = `EXE_OP_MULT;
+                                        //id_o_alu_sel= `EXE_RES_ARITH;
+                                    end
+                                    3'b001: begin       // op *multu*
+                                        id_o_alu_op = `EXE_OP_MULTU;
+                                        //id_o_alu_sel= `EXE_RES_ARITH;
+                                    end
+                                    3'b010: begin       // op *div*
+                                        id_o_alu_op = `EXE_OP_DIV;
+                                        //id_o_alu_sel= `EXE_RES_ARITH;
+                                    end
+                                    3'b011: begin       // op *divu*
+                                        id_o_alu_op = `EXE_OP_DIVU;
+                                        //id_o_alu_sel= `EXE_RES_ARITH;
+                                    end
+                                endcase
                             end
                             `INS_FUNC_GRP_BAS: begin    // 
                                 id_o_wreg = 'b1;
@@ -200,12 +225,20 @@ always @* begin
                                 reg1_read = 'b1;
                                 case (func_idx)
                                     3'b000: begin       // op *add*
+                                        id_o_alu_op = `EXE_OP_ADD;
+                                        id_o_alu_sel= `EXE_RES_ARITH;
                                     end
                                     3'b001: begin       // op *addu*
+                                        id_o_alu_op = `EXE_OP_ADDU;
+                                        id_o_alu_sel= `EXE_RES_ARITH;
                                     end
-                                    3'b010: begin       // op *substract*
+                                    3'b010: begin       // op *sub*
+                                        id_o_alu_op = `EXE_OP_SUB;
+                                        id_o_alu_sel= `EXE_RES_ARITH;
                                     end
                                     3'b011: begin       // op *subu*
+                                        id_o_alu_op = `EXE_OP_SUBU;
+                                        id_o_alu_sel= `EXE_RES_ARITH;
                                     end
                                     3'b100: begin       // op *and*
                                         id_o_alu_op = `EXE_OP_AND;
@@ -226,6 +259,17 @@ always @* begin
                                 endcase
                             end
                             `INS_FUNC_GRP_SET: begin
+                                id_o_wreg = 'b1;
+                                reg0_read = 'b1;
+                                reg1_read = 'b1;
+                                case (func_idx)
+                                    3'b010: begin       // op *slt*
+                                        id_o_alu_op = `EXE_OP_SLT;
+                                    end
+                                    3'b011: begin       // op *sltu*
+                                        id_o_alu_op = `EXE_OP_SLTU;
+                                    end
+                                endcase
                             end
                         endcase
                     end
@@ -235,32 +279,87 @@ always @* begin
                 id_o_wreg = 'b1;
                 id_o_waddr = rt;
                 reg0_read = 'b1;
-                id_o_alu_sel= `EXE_RES_LOGIC;
                 case (op_idx)
                     3'b000: begin   // op *addi*
+                        id_o_alu_op = `EXE_OP_ADDI;
+                        id_o_alu_sel= `EXE_RES_ARITH;
+                        reg1_imme_sign = 'b1;
                     end
                     3'b001: begin   // op *addiu*
+                        id_o_alu_op = `EXE_OP_ADDIU;
+                        id_o_alu_sel= `EXE_RES_ARITH;
+                        reg1_imme_sign = 'b1;   // misnomer
                     end
                     3'b010: begin   // op *slti* set less than imm.
+                        id_o_alu_op = `EXE_OP_SLT;
+                        id_o_alu_sel= `EXE_RES_ARITH;
+                        reg1_imme_sign = 'b1;
                     end
                     3'b011: begin   // op *sltiu* slti unsigned
+                        id_o_alu_op = `EXE_OP_SLTU;
+                        id_o_alu_sel= `EXE_RES_ARITH;
+                        reg1_imme_sign = 'b1;
                     end
                     3'b100: begin   // op *andi*
                         id_o_alu_op = `EXE_OP_AND;
+                        id_o_alu_sel= `EXE_RES_LOGIC;
                     end
                     3'b101: begin   // op *ori*
                         id_o_alu_op = `EXE_OP_OR;
+                        id_o_alu_sel= `EXE_RES_LOGIC;
                     end
                     3'b110: begin   // op *xori*
                         id_o_alu_op = `EXE_OP_XOR;
+                        id_o_alu_sel= `EXE_RES_LOGIC;
                     end
                     3'b111: begin   // op *lui* load upper imm.
                         id_o_alu_op = `EXE_OP_OR;   // PSEODU INST
+                        id_o_alu_sel= `EXE_RES_LOGIC;
                         reg1_imme_up = 'b1;
                     end
                 endcase
             end
             `INS_OP_GRP_TLB: begin
+            end
+            `INS_OP_GRP_MUL: begin
+                case(op_idx)
+                    3'b000: begin
+                        case (func_grp)
+                            3'b000: begin
+                                id_o_wreg = 'b1;
+                                reg0_read = 'b1;
+                                reg1_read = 'b1;
+                                case (func_idx)
+                                    3'b000: begin   // op *madd*
+                                    end
+                                    3'b001: begin   // op *maddu*
+                                    end
+                                    3'b010: begin   // op *mul*
+                                        id_o_alu_op = `EXE_OP_MUL;
+                                        id_o_alu_sel = `EXE_RES_MUL;
+                                    end
+                                    3'b100: begin   // op *msub*
+                                    end
+                                    3'b101: begin   // op *msubu*
+                                    end
+                                endcase
+                            end
+                            3'b100: begin
+                                id_o_wreg = 'b1;
+                                reg0_read = 'b1;
+                                id_o_alu_sel = `EXE_RES_ARITH;
+                                case (func_idx)
+                                    3'b000: begin   // op *clz* counting leading zeros
+                                        id_o_alu_op = `EXE_OP_CLZ;
+                                    end
+                                    3'b001: begin   // op *clo* counting leading ones
+                                        id_o_alu_op = `EXE_OP_CLO;
+                                    end
+                                endcase
+                            end
+                        endcase
+                    end
+                endcase
             end
             `INS_OP_GRP_LOAD: begin
             end
@@ -310,6 +409,8 @@ always @* begin
         id_o_reg0 = shamt;
     end else if (reg0_imme_up) begin
         id_o_reg0 = {imme, 16'b0};
+    end else if (reg0_imme_sign) begin
+        id_o_reg0 = {{16{imme[15]}}, imme};
     end else if (!reg0_read) begin
         id_o_reg0 = imme;
     end else begin
@@ -330,6 +431,8 @@ always @* begin
         id_o_reg1 = shamt;
     end else if (reg1_imme_up) begin
         id_o_reg1 = {imme, 16'b0};
+    end else if (reg1_imme_sign) begin
+        id_o_reg1 = {{16{imme[15]}}, imme};
     end else if (!reg1_read) begin
         id_o_reg1 = imme;
     end else begin

@@ -1,20 +1,21 @@
 set nocompatible
-"filetype off
+filetype off
 
 set rtp+=~/.vim/bundle/Vundle.vim
-"call vundle#begin()
-"Plugin 'gmarik/Vundle'
+call vundle#begin()
+Plugin 'gmarik/Vundle'
+Plugin 'nachumk/systemverilog.vim'
 "Plugin 'scrooloose/syntastic'
 "Plugin 'nvie/vim-flake8'
 "Plugin 'SirVer/UltiSnips'
 "Plugin 'honza/vim-snippets'
 "Plugin 'Valloric/YouCompleteMe'
 "Plugin 'majutsushi/tagbar'
-"call vundle#end()
+call vundle#end()
 
 "filetype on
-"filetype plugin indent on
-"syntax on
+filetype plugin indent on
+syntax on
 
 " from vi to vim 
 set showcmd        " Show (partial) command in status line.
@@ -25,7 +26,7 @@ set incsearch      " Incremental search
 set hlsearch
 set autowrite      " Automatically save before commands like :next and :make
 set hidden         " Hide buffers when they are abandoned
-"set mouse=a       " Enable mouse usage (all modes)
+set mouse=a       " Enable mouse usage (all modes)
 set expandtab
 set shiftwidth=4
    
