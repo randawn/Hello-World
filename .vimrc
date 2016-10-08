@@ -1,17 +1,17 @@
 set nocompatible
 filetype off
 
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-Plugin 'gmarik/Vundle'
-Plugin 'nachumk/systemverilog.vim'
-"Plugin 'scrooloose/syntastic'
-"Plugin 'nvie/vim-flake8'
-"Plugin 'SirVer/UltiSnips'
-"Plugin 'honza/vim-snippets'
-"Plugin 'Valloric/YouCompleteMe'
-"Plugin 'majutsushi/tagbar'
-call vundle#end()
+"set rtp+=~/.vim/bundle/Vundle.vim
+"call vundle#begin()
+"Plugin 'gmarik/Vundle'
+"Plugin 'nachumk/systemverilog.vim'
+""Plugin 'scrooloose/syntastic'
+""Plugin 'nvie/vim-flake8'
+""Plugin 'SirVer/UltiSnips'
+""Plugin 'honza/vim-snippets'
+""Plugin 'Valloric/YouCompleteMe'
+""Plugin 'majutsushi/tagbar'
+"call vundle#end()
 
 "filetype on
 filetype plugin indent on
