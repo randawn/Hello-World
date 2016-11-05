@@ -2,15 +2,18 @@
 alias a alias
 a v vi
 
-a sl ls
-a ls ls --color
-a la ls -a
-a ll ls -l
 
-a j jobs
-a h history
+a ls    'ls --color=auto'
+a sl    ls
+a ll    'ls -alF'
+a la    'ls -A'
+a l     'ls -CF'
 
-a p pwd
-a .. cd ..
-a - cd -
+a j     jobs
+a h     history
 
+a p     'pwd'
+a ..    'cd ..'
+a -     'cd -'
+
+a grep  'grep --color=auto'

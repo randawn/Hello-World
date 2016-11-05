@@ -1,7 +1,5 @@
 
 
-source ~/.alias
-
 bindkey -b C-W backward-delete-word
 
 setenv LSCOLORS ExGxFxdxCxegedabagExEx
@@ -37,4 +35,6 @@ setenv PATH "$VERDI_HOME/bin":$PATH
 
 # mips
 setenv PATH "/home/ran/Hello-world/openMIPS/mips-4.3/bin":$PATH
+
+source ~/.alias
 
